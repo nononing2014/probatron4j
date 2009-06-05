@@ -71,11 +71,7 @@ public class Driver
     private static void handleCommandLineArg( String arg )
     {
         logger.debug( "Handling command line argument: " + arg );
-        if( arg.equals( "-v" ) || arg.equals( "-version" ) )
-        {
-
-        }
-        else if( arg.equals( "-n1" ) || arg.equals( "-n0" ) )
+        if( arg.equals( "-n1" ) || arg.equals( "-n0" ) )
         {
             physicalLocators = arg.equals( "-n1" );
             logger.debug( "Setting option (use physical locators): " + physicalLocators );
@@ -87,7 +83,7 @@ public class Driver
         }
         else if( arg.startsWith( "-p" ) )
         {
-            phase = arg.substring( 2, arg.length()  );
+            phase = arg.substring( 2, arg.length() );
             logger.debug( "Using phase: " + phase );
         }
         else
@@ -110,7 +106,14 @@ public class Driver
         long t = System.currentTimeMillis();
         logger.info( "Starting Probatron" );
 
-        if( args.length == 0 )
+        if( args.length == 1 && ( args[ 0 ].equals( "-v" ) || args[ 0 ].equals( "-version" ) ) )
+        {
+            String ver = Package.getPackage( "org.probatron" ).getImplementationVersion();
+            System.out.println( ver );
+            System.exit( APP_EXIT_OKAY );
+        }
+
+        if( args.length < 2 )
         {
             showUsage();
             System.exit( 0 );
@@ -128,12 +131,6 @@ public class Driver
             {
                 handleCommandLineArg( arg );
             }
-        }
-
-        if( args.length < 2 )
-        {
-            showUsage();
-            System.exit( 0 );
         }
 
         candidateDocArg = fixArg( args[ args.length - 2 ] );

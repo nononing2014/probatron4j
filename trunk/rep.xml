@@ -1,585 +1,321 @@
 <?xml version="1.0" standalone="yes"?>
 
-<svrl:schematron-output title="" schemaVersion="" xmlns:svrl="http://purl.oclc.org/dsdl/svrl"><svrl:ns-prefix-in-attribute-values prefix="ns0" uri="http://www.w3.org/1998/Math/MathML"></svrl:ns-prefix-in-attribute-values><svrl:ns-prefix-in-attribute-values prefix="xlink" uri="http://www.w3.org/1999/xlink"></svrl:ns-prefix-in-attribute-values><svrl:ns-prefix-in-attribute-values prefix="oasis" uri="http://www.oasis-open.org"></svrl:ns-prefix-in-attribute-values>
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   <svrl:successful-report test="@style" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/thead[1]/tr[1]/th[1]" line="247" col="14">
+<svrl:schematron-output title="" schemaVersion="" xmlns:svrl="http://purl.oclc.org/dsdl/svrl"><svrl:ns-prefix-in-attribute-values prefix="ns0" uri="http://www.w3.org/1998/Math/MathML"></svrl:ns-prefix-in-attribute-values><svrl:ns-prefix-in-attribute-values prefix="xlink" uri="http://www.w3.org/1999/xlink"></svrl:ns-prefix-in-attribute-values><svrl:ns-prefix-in-attribute-values prefix="oasis" uri="http://www.oasis-open.org"></svrl:ns-prefix-in-attribute-values><svrl:successful-report test="@style" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/thead[1]/tr[1]/th[1]" line="246" col="14">
       <svrl:text> The style atribute should not be used.</svrl:text>
-   </svrl:successful-report>
-   
-   
-   
-   <svrl:successful-report test="@style" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/thead[1]/tr[2]/th[2]" line="252" col="61">
+   </svrl:successful-report><svrl:successful-report test="@style" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/thead[1]/tr[2]/th[2]" line="251" col="61">
       <svrl:text> The style atribute should not be used.</svrl:text>
-   </svrl:successful-report>
-   
-   
-   <svrl:successful-report test="@style" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/thead[1]/tr[2]/th[3]" line="255" col="61">
+   </svrl:successful-report><svrl:successful-report test="@style" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/thead[1]/tr[2]/th[3]" line="254" col="61">
       <svrl:text> The style atribute should not be used.</svrl:text>
-   </svrl:successful-report>
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   <svrl:failed-assert test="not(string-length(text()))" location="/{}article[1]/{}front[1]/{}article-meta[1]/{}aff[1]">
-      <svrl:text>All content within the aff element
-                must be tagged</svrl:text>
-   </svrl:failed-assert>
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   <svrl:successful-report test="not(matches(.,'^(\d4)$'))" location="/article[1]/front[1]/article-meta[1]/pub-date[1]/year[1]" line="51" col="15">
-      <svrl:text>Element year must contain 4 digits.</svrl:text>
-   </svrl:successful-report>
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   <svrl:successful-report test="not(string(.))" location="/article[1]/floats-group[1]/table-wrap[1]/table-wrap-foot[1]/fn[1]/p[1]" line="284" col="15">
-      <svrl:text>Element p should not
-                be empty.</svrl:text>
-   </svrl:successful-report>
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   <svrl:successful-report test="not(matches(.,'[0-9]4'))" location="/article[1]/front[1]/article-meta[1]/pub-date[1]/year[1]" line="51" col="15">
+   </svrl:successful-report><svrl:failed-assert test="not(string-length(text()))" location="/{}article[1]/{}front[1]/{}article-meta[1]/{}aff[1]">
+      <svrl:text>All content within the aff element must be
+        tagged</svrl:text>
+   </svrl:failed-assert><svrl:successful-report test="not(matches(.,'^(\d4)$'))" location="/article[1]/front[1]/article-meta[1]/pub-date[1]/year[1]" line="51" col="15">
+      <svrl:text>Element year must
+        contain 4 digits.</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="not(string(.))" location="/article[1]/floats-group[1]/table-wrap[1]/table-wrap-foot[1]/fn[1]/p[1]" line="283" col="15">
+      <svrl:text>Element p should not be
+      empty.</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="matches(text(),&quot;www.&quot;) or matches(text(),&quot;http:&quot;)" location="/article[1]/front[1]/article-meta[1]/abstract[1]/p[1]" line="64" col="12">
+      <svrl:text>Element appears to contain an untagged URL.</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="not(matches(.,'[0-9]4'))" location="/article[1]/front[1]/article-meta[1]/pub-date[1]/year[1]" line="51" col="15">
       <svrl:text>When possible, the year [09] should be expressed as a four-digit number. See the DTD
-                documentation.</svrl:text>
-   </svrl:successful-report>
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-</svrl:schematron-output>
+      documentation.</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]" line="3" col="95">
+      <svrl:text>Element 'article'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]" line="4" col="10">
+      <svrl:text>Element 'front'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/journal-meta[1]" line="5" col="19">
+      <svrl:text>Element 'journal-meta'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/journal-meta[1]/journal-title-group[1]" line="7" col="28">
+      <svrl:text>Element 'journal-title-group'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/journal-meta[1]/publisher[1]" line="13" col="18">
+      <svrl:text>Element 'publisher'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]" line="18" col="19">
+      <svrl:text>Element 'article-meta'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/title-group[1]" line="20" col="20">
+      <svrl:text>Element 'title-group'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/contrib-group[1]" line="23" col="22">
+      <svrl:text>Element 'contrib-group'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/contrib-group[1]/contrib[1]" line="24" col="26">
+      <svrl:text>Element 'contrib'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/contrib-group[1]/contrib[1]/name[1]" line="25" col="17">
+      <svrl:text>Element 'name'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/contrib-group[1]/contrib[2]" line="31" col="26">
+      <svrl:text>Element 'contrib'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/contrib-group[1]/contrib[2]/name[1]" line="32" col="17">
+      <svrl:text>Element 'name'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/contrib-group[1]/contrib[3]" line="38" col="26">
+      <svrl:text>Element 'contrib'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/contrib-group[1]/contrib[3]/name[1]" line="39" col="17">
+      <svrl:text>Element 'name'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/aff[1]" line="46" col="20">
+      <svrl:text>Element 'aff'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/pub-date[1]" line="49" col="17">
+      <svrl:text>Element 'pub-date'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/product[1]" line="57" col="16">
+      <svrl:text>Element 'product'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/permissions[1]" line="60" col="20">
+      <svrl:text>Element 'permissions'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/abstract[1]" line="63" col="41">
+      <svrl:text>Element 'abstract'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/front[1]/article-meta[1]/abstract[1]/p[1]" line="64" col="12">
+      <svrl:text>Element 'p'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]" line="79" col="9">
+      <svrl:text>Element 'body'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/p[1]" line="80" col="8">
+      <svrl:text>Element 'p'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[1]" line="91" col="10">
+      <svrl:text>Element 'sec'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[1]/sec[1]" line="93" col="12">
+      <svrl:text>Element 'sec'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[1]/sec[1]/p[1]" line="95" col="12">
+      <svrl:text>Element 'p'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]" line="111" col="10">
+      <svrl:text>Element 'sec'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[1]" line="113" col="10">
+      <svrl:text>Element 'p'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[3]" line="121" col="19">
+      <svrl:text>Element 'p'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]" line="129" col="10">
+      <svrl:text>Element 'p'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]" line="130" col="31">
+      <svrl:text>Element 'disp-formula'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]" line="131" col="60">
+      <svrl:text>Element 'math'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:msub[1]" line="132" col="19">
+      <svrl:text>Element 'msub'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:msub[1]/ns0:mrow[1]" line="133" col="21">
+      <svrl:text>Element 'mrow'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:msub[1]/ns0:mrow[2]" line="136" col="21">
+      <svrl:text>Element 'mrow'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]" line="141" col="56">
+      <svrl:text>Element 'mfenced'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]" line="142" col="21">
+      <svrl:text>Element 'mrow'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]" line="143" col="24">
+      <svrl:text>Element 'mfrac'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]/ns0:mrow[1]" line="144" col="25">
+      <svrl:text>Element 'mrow'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]/ns0:mrow[1]/ns0:msub[1]" line="147" col="27">
+      <svrl:text>Element 'msub'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]/ns0:mrow[1]/ns0:msub[1]/ns0:mrow[1]" line="148" col="29">
+      <svrl:text>Element 'mrow'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]/ns0:mrow[1]/ns0:msub[1]/ns0:mrow[2]" line="151" col="29">
+      <svrl:text>Element 'mrow'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]/ns0:mrow[1]/ns0:msub[2]" line="156" col="27">
+      <svrl:text>Element 'msub'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]/ns0:mrow[1]/ns0:msub[2]/ns0:mrow[1]" line="157" col="29">
+      <svrl:text>Element 'mrow'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]/ns0:mrow[1]/ns0:msub[2]/ns0:mrow[2]" line="160" col="29">
+      <svrl:text>Element 'mrow'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]/ns0:mrow[2]" line="166" col="25">
+      <svrl:text>Element 'mrow'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]/ns0:mrow[2]/ns0:msub[1]" line="169" col="27">
+      <svrl:text>Element 'msub'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]/ns0:mrow[2]/ns0:msub[1]/ns0:mrow[1]" line="170" col="29">
+      <svrl:text>Element 'mrow'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/body[1]/sec[2]/p[7]/disp-formula[1]/ns0:math[1]/ns0:mfenced[1]/ns0:mrow[1]/ns0:mfrac[1]/ns0:mrow[2]/ns0:msub[1]/ns0:mrow[2]" line="173" col="29">
+      <svrl:text>Element 'mrow'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]" line="186" col="9">
+      <svrl:text>Element 'back'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/ack[1]" line="187" col="10">
+      <svrl:text>Element 'ack'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/ack[1]/p[1]" line="188" col="10">
+      <svrl:text>Element 'p'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/ref-list[1]" line="193" col="15">
+      <svrl:text>Element 'ref-list'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/ref-list[1]/ref[1]" line="194" col="20">
+      <svrl:text>Element 'ref'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/ref-list[1]/ref[1]/mixed-citation[1]" line="195" col="49">
+      <svrl:text>Element 'mixed-citation'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/ref-list[1]/ref[1]/mixed-citation[1]/string-name[1]" line="195" col="62">
+      <svrl:text>Element 'string-name'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/ref-list[1]/ref[1]/mixed-citation[1]/string-name[2]" line="198" col="43">
+      <svrl:text>Element 'string-name'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/ref-list[1]/ref[1]/mixed-citation[1]/chapter-title[1]" line="202" col="36">
+      <svrl:text>Element 'chapter-title'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/ref-list[1]/ref[1]/mixed-citation[1]/source[1]" line="203" col="57">
+      <svrl:text>Element 'source'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/ref-list[1]/ref[1]/mixed-citation[1]/publisher-name[1]" line="205" col="66">
+      <svrl:text>Element 'publisher-name'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/fn-group[1]" line="209" col="40">
+      <svrl:text>Element 'fn-group'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/fn-group[1]/fn[1]" line="210" col="11">
+      <svrl:text>Element 'fn'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/back[1]/fn-group[1]/fn[1]/p[1]" line="211" col="12">
+      <svrl:text>Element 'p'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]" line="219" col="17">
+      <svrl:text>Element 'floats-group'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/fig[1]" line="220" col="18">
+      <svrl:text>Element 'fig'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/fig[1]/caption[1]" line="221" col="16">
+      <svrl:text>Element 'caption'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/fig[1]/graphic[1]" line="225" col="31">
+      <svrl:text>Element 'graphic'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]" line="229" col="41">
+      <svrl:text>Element 'table-wrap'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/caption[1]" line="230" col="16">
+      <svrl:text>Element 'caption'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]" line="233" col="14">
+      <svrl:text>Element 'table'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/colgroup[1]" line="234" col="19">
+      <svrl:text>Element 'colgroup'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/thead[1]" line="243" col="16">
+      <svrl:text>Element 'thead'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/thead[1]/tr[1]" line="244" col="15">
+      <svrl:text>Element 'tr'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/thead[1]/tr[2]" line="248" col="15">
+      <svrl:text>Element 'tr'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/thead[1]/tr[2]/th[2]" line="251" col="61">
+      <svrl:text>Element 'th'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/thead[1]/tr[3]" line="257" col="15">
+      <svrl:text>Element 'tr'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/tbody[1]" line="266" col="16">
+      <svrl:text>Element 'tbody'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/tbody[1]/tr[1]" line="267" col="15">
+      <svrl:text>Element 'tr'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table[1]/tbody[1]/tr[2]" line="270" col="15">
+      <svrl:text>Element 'tr'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table-wrap-foot[1]" line="281" col="24">
+      <svrl:text>Element 'table-wrap-foot'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/table-wrap[1]/table-wrap-foot[1]/fn[1]" line="282" col="13">
+      <svrl:text>Element 'fn'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]" line="288" col="25">
+      <svrl:text>Element 'boxed-text'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/caption[1]" line="289" col="16">
+      <svrl:text>Element 'caption'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[1]" line="292" col="12">
+      <svrl:text>Element 'sec'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[1]/list[1]" line="294" col="34">
+      <svrl:text>Element 'list'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[1]/list[1]/list-item[1]" line="295" col="22">
+      <svrl:text>Element 'list-item'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[1]/list[1]/list-item[1]/p[1]" line="296" col="16">
+      <svrl:text>Element 'p'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[1]/list[1]/list-item[2]" line="299" col="22">
+      <svrl:text>Element 'list-item'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[2]" line="304" col="12">
+      <svrl:text>Element 'sec'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[2]/list[1]" line="306" col="34">
+      <svrl:text>Element 'list'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[2]/list[1]/list-item[1]" line="307" col="22">
+      <svrl:text>Element 'list-item'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[2]/list[1]/list-item[2]" line="310" col="22">
+      <svrl:text>Element 'list-item'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[2]/list[1]/list-item[3]" line="313" col="22">
+      <svrl:text>Element 'list-item'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[2]/list[1]/list-item[4]" line="316" col="22">
+      <svrl:text>Element 'list-item'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[3]" line="321" col="12">
+      <svrl:text>Element 'sec'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[3]/list[1]" line="323" col="34">
+      <svrl:text>Element 'list'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[3]/list[1]/list-item[1]" line="324" col="22">
+      <svrl:text>Element 'list-item'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[3]/list[1]/list-item[2]" line="327" col="22">
+      <svrl:text>Element 'list-item'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[3]/list[1]/list-item[3]" line="330" col="22">
+      <svrl:text>Element 'list-item'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report><svrl:successful-report test="text()[ matches(., '\s\s' )]" location="/article[1]/floats-group[1]/boxed-text[1]/sec[3]/list[1]/list-item[4]" line="333" col="22">
+      <svrl:text>Element 'list-item'
+        contains two or more contiguous whitespace characters</svrl:text>
+   </svrl:successful-report></svrl:schematron-output>
 

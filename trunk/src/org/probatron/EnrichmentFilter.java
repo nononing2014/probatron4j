@@ -1,27 +1,27 @@
-/*  This file is part of the source of
+/*
+ * This file is part of the source of
  * 
- *  Probatron4J - a Schematron validator for Java(tm)
+ * Probatron4J - a Schematron validator for Java(tm)
  * 
- *  Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
- *   
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
+ * 
+ * This program is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.probatron;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Stack;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
@@ -33,6 +33,7 @@ public class EnrichmentFilter extends XMLFilterImpl
 {
     static Logger logger = Logger.getLogger( EnrichmentFilter.class );
     private ValidationReport rpt;
+    private Stack<String> ancestors = new Stack<String>();
 
 
     public EnrichmentFilter( ValidationReport rpt )
@@ -44,6 +45,7 @@ public class EnrichmentFilter extends XMLFilterImpl
     public void startElement( String namespaceURI, String localName, String qualifiedName,
             Attributes atts ) throws SAXException
     {
+        ancestors.push( localName );
 
         if( namespaceURI.equals( Utils.SVRL_NAME )
                 && ( localName.equals( "successful-report" ) || localName
@@ -101,8 +103,34 @@ public class EnrichmentFilter extends XMLFilterImpl
                 getContentHandler().endElement( Utils.SVRL_NAME,
                         "ns-prefix-in-attribute-values", "ns-prefix-in-attribute-values" );
             }
-
         }
+    }
+
+
+    @Override
+    public void characters( char[] ch, int start, int length ) throws SAXException
+    {
+        
+        // we only strip ws children of the root element
+        if( ! Driver.compact || ! ancestors.peek().equals( "schematron-output" ) )
+        {
+            super.characters( ch, start, length );
+            return;
+        }
+
+        // if there's any non-ws here, call the superclass
+        for( int i = start; i < start + length; i++ )
+        {
+            char c = ch[ i ];
+            if( ! ( c == ' ' || c == '\t' || c == '\n' ) )
+            {
+
+                super.characters( ch, start, length );
+                return;
+            }
+        }
+
+        return; // doing nothing
 
     }
 
@@ -110,6 +138,7 @@ public class EnrichmentFilter extends XMLFilterImpl
     public void endElement( String namespaceURI, String localName, String qualifiedName )
             throws SAXException
     {
+        ancestors.pop();
         if( namespaceURI.equals( Utils.SVRL_NAME )
                 && ( localName.equals( "ns-prefix-in-attribute-values" ) ) )
         {
