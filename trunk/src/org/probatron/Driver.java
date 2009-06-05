@@ -1,23 +1,21 @@
-/*  This file is part of the source of
+/*
+ * This file is part of the source of
  * 
- *  Probatron4J - a Schematron validator for Java(tm)
+ * Probatron4J - a Schematron validator for Java(tm)
  * 
- *  Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
- *   
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
+ * 
+ * This program is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 
 package org.probatron;
 
@@ -40,6 +38,7 @@ public class Driver
     static int APP_EXIT_OKAY = 0;
     static boolean physicalLocators = true;
     static boolean compact = true;
+    static String phase;
 
     static
     {
@@ -62,10 +61,10 @@ public class Driver
         System.err.println( "Options:" );
         System.err.println( "-n0|1     Do not [or do] emit line/col numbers in report" );
         System.err.println( "-p<phase> Validate using the phase named <phase>" );
-        System.err.println( "-q0|1     Do not [or do] validate the Schematron schema itself" );
+        // TODO        
+        //        System.err.println( "-q0|1     Do not [or do] validate the Schematron schema itself" );
         System.err.println( "-r0|1     Richness of SVRL report (0=most compact)" );
         System.err.println( "-v        Show version info and halt" );
-
     }
 
 
@@ -79,13 +78,18 @@ public class Driver
         else if( arg.equals( "-n1" ) || arg.equals( "-n0" ) )
         {
             physicalLocators = arg.equals( "-n1" );
-            logger.debug( "Setting option (use physical locators):" + physicalLocators );
-        }  
+            logger.debug( "Setting option (use physical locators): " + physicalLocators );
+        }
         else if( arg.equals( "-r1" ) || arg.equals( "-r0" ) )
         {
             compact = arg.equals( "-r0" );
-            logger.debug( "Setting option (compact):" + compact );
-        }  
+            logger.debug( "Setting option (compact): " + compact );
+        }
+        else if( arg.startsWith( "-p" ) )
+        {
+            phase = arg.substring( 2, arg.length()  );
+            logger.debug( "Using phase: " + phase );
+        }
         else
         {
             logger.fatal( "Unrecognized command-line option \"" + arg + "\". Aborting." );
@@ -125,13 +129,13 @@ public class Driver
                 handleCommandLineArg( arg );
             }
         }
-        
+
         if( args.length < 2 )
         {
             showUsage();
             System.exit( 0 );
         }
-        
+
         candidateDocArg = fixArg( args[ args.length - 2 ] );
         schemaDocArg = fixArg( args[ args.length - 1 ] );
 
