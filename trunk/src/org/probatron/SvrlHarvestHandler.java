@@ -99,7 +99,7 @@ public class SvrlHarvestHandler implements ContentHandler
         if( uri.equals( Utils.SVRL_NAME ) )
         {
             if( localName.equals( "successful-report" )
-                    || localName.equals( "failed-assertion" ) )
+                    || localName.equals( "failed-assert" ) )
             {
                 String xpath = atts.getValue( "location" );
                 logger.trace( "Harvesting xpath:" + xpath );
@@ -116,7 +116,6 @@ public class SvrlHarvestHandler implements ContentHandler
                 String prefix = atts.getValue( "prefix" );
                 String ns = atts.getValue( "uri" );
                 this.rpt.nsMap.registerMapping( prefix, ns );
-
             }
         }
     }

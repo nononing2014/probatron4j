@@ -49,7 +49,7 @@ public class EnrichmentFilter extends XMLFilterImpl
 
         if( namespaceURI.equals( Utils.SVRL_NAME )
                 && ( localName.equals( "successful-report" ) || localName
-                        .equals( "failed-assertion" ) ) )
+                        .equals( "failed-assert" ) ) )
         {
             String pseudo = atts.getValue( "location" );
             String fixed = this.rpt.nsMap.fixupXpath( pseudo );
