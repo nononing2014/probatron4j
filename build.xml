@@ -20,74 +20,78 @@
 	 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	 *
 -->
-
+	
 <project name="probatron4j" default="jar" basedir=".">
 
-	<description>Probatron4J build</description>
+  <description>Probatron4J build</description>
 
-	<!-- set global properties for this build -->
-	<property name="version" value="0.7.1" />
-	<property name="src" location="src" />
-	<property name="build" location="build" />
-	<property name="dist" location="dist" />
-	<property name="etc" location="etc" />
-	<property name="lib" location="etc/lib" />
+  <!-- set global properties for this build -->
+  <property name="version" value="0.7.0"/>
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist" location="dist"/>
+  <property name="etc" location="etc"/>
+  <property name="lib" location="etc/lib"/>
 
-	<target name="init">
-		<!-- Create the time stamp -->
-		<tstamp />
-		<!-- Create the build directory structure used by compile -->
-		<mkdir dir="${build}" />
-	</target>
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
 
-	<target name="compile" depends="init" description="compile the source">
-		<!-- Compile the java code from ${src} into ${build} -->
-		<javac source="1.5" srcdir="${src}" destdir="${build}">
-			<classpath>
-				<pathelement location="${lib}/log4j-1.2.15.jar" />
-			</classpath>
-		</javac>
-	</target>
+  <target name="compile" depends="init" description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac source="1.5" srcdir="${src}" destdir="${build}">
+      <classpath>
+        <pathelement location="${lib}/log4j-1.2.15.jar"/>
+      </classpath>
+    </javac>
+  </target>
 
-	<target name="jar" depends="compile" description="generate an all-in-one executable JAR">
-		<!-- Create the distribution directory -->
-		<mkdir dir="${dist}/temp" />
-		<unjar src="${lib}/log4j-1.2.15.jar" dest="${dist}/temp" />
-		<unjar src="${lib}/saxon9.jar" dest="${dist}/temp" />
-		<copy todir="${dist}/temp">
-			<fileset dir='${build}' />
-		</copy>
-		<delete dir="${dist}/temp/META-INF" />
-		<copy todir="${dist}/temp/resource/stylesheet">
-			<fileset dir="etc/stylesheet" />
-		</copy>
+  <target name="jar" depends="compile" description="generate an all-in-one executable JAR">
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/temp"/>
+    <unjar src="${lib}/log4j-1.2.15.jar" dest="${dist}/temp"/>
+    <unjar src="${lib}/saxon9.jar" dest="${dist}/temp"/>
+    <copy todir="${dist}/temp">
+      <fileset dir="${build}"/>
+    </copy>
+    <delete dir="${dist}/temp/META-INF"/>
+    <copy todir="${dist}/temp/resource/stylesheet">
+      <fileset dir="etc/stylesheet"/>
+    </copy>
 
-		<!-- Make the jar  -->
-		<jar jarfile="${dist}/probatron.jar" basedir="${dist}/temp">
-			<manifest>
-				<attribute name="Built-By" value="Griffin Brown Digital Publishing Ltd" />
-				<attribute name="Implementation-Vendor" value="Griffin Brown Digital Publishing Ltd" />
-				<attribute name="Implementation-Title" value="Probatron4J" />
-				<attribute name="Implementation-Version" value="${version}" />
-				<attribute name="Main-Class" value="org.probatron.Driver" />
-			</manifest>
-		</jar>
-		<delete dir="${dist}/temp" />
-	</target>
+    <!-- Make the jar  -->
+    <jar jarfile="${dist}/probatron.jar" basedir="${dist}/temp">
+      <manifest>
+        <attribute name="Built-By" value="Griffin Brown Digital Publishing Ltd"/>
+        <attribute name="Implementation-Vendor" value="Griffin Brown Digital Publishing Ltd"/>
+        <attribute name="Implementation-Title" value="Probatron4J"/>
+        <attribute name="Implementation-Version" value="${version}"/>
+        <attribute name="Main-Class" value="org.probatron.Driver"/>
+      </manifest>
+    </jar>
+    <delete dir="${dist}/temp"/>
+  </target>
 
-	<target name="distro" depends="jar" description="generates distro files">
-		<zip basedir="${dist}" destfile="${dist}/probatron4j-${version}.zip" includes="*.jar" />
-		<zip destfile="${dist}/probatron4j-source-${version}.zip">
-			<zipfileset dir="${src}" prefix="src" />
-			<zipfileset dir="${etc}" prefix="etc" />
-			<zipfileset dir="." includes="build.xml" />
-		</zip>
-	</target>
+  <target name="distro" depends="jar" description="generates distro files">
+    <zip destfile="${dist}/probatron4j-${version}.zip">
+      <zipfileset dir="${dist}" includes="*.jar"/>
+      <zipfileset dir="${etc}/notices" prefix="notices"/>
+    </zip>
+    <zip destfile="${dist}/probatron4j-source-${version}.zip">
+      <zipfileset dir="${src}" prefix="src"/>
+      <zipfileset dir="${etc}" prefix="etc"/>
+      <zipfileset dir="." includes="build.xml"/>
+    </zip>
 
-	<target name="clean" description="clean up">
-		<!-- Delete the ${build} and ${dist} directory trees -->
-		<delete dir="${build}" />
-		<delete dir="${dist}" />
-	</target>
+  </target>
+
+  <target name="clean" description="clean up">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
 
 </project>
