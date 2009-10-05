@@ -22,6 +22,8 @@ import org.xml.sax.helpers.XMLFilterImpl;
 /*
  * * Filter to write an XML document from a SAX event stream.
  * 
+ * !!!NOTE!!! This has been modified from the original for use in Probatron4J
+ * 
  * <p>This class can be used by itself or as part of a SAX event stream: it takes as input a
  * series of SAX2 ContentHandler events and uses the information in those events to write an XML
  * document. Since this class is a filter, it can also pass the events on down a filter chain
@@ -176,6 +178,12 @@ import org.xml.sax.helpers.XMLFilterImpl;
 @SuppressWarnings("unchecked")
 public class XMLWriter extends XMLFilterImpl
 {
+
+    public String ETAGO = "<";
+    public String ETAGC = ">";
+    public String PIO = "<?";
+    public String PIC = "?>";
+
 
     ////////////////////////////////////////////////////////////////////
     // Constructors.
@@ -343,7 +351,7 @@ public class XMLWriter extends XMLFilterImpl
      * @see #forceNSDecl(java.lang.String)
      * @see #forceNSDecl(java.lang.String,java.lang.String)
      */
-    
+
     public void setPrefix( String uri, String prefix )
     {
         prefixTable.put( uri, prefix );
@@ -422,7 +430,7 @@ public class XMLWriter extends XMLFilterImpl
     public void startDocument() throws SAXException
     {
         reset();
-        write( "<?xml version=\"1.0\" standalone=\"yes\"?>\n\n" );
+        write( ETAGO + "?xml version=\"1.0\" standalone=\"yes\"?>\n\n" );
         super.startDocument();
     }
 
@@ -476,7 +484,7 @@ public class XMLWriter extends XMLFilterImpl
     {
         elementLevel++;
         nsSupport.pushContext();
-        write( '<' );
+        write( ETAGO );
         writeName( uri, localName, qName, true );
         writeAttributes( atts );
         if( elementLevel == 1 )
@@ -484,7 +492,7 @@ public class XMLWriter extends XMLFilterImpl
             forceNSDecls();
         }
         writeNSDecls();
-        write( '>' );
+        write( ETAGC );
         super.startElement( uri, localName, qName, atts );
     }
 
@@ -509,9 +517,9 @@ public class XMLWriter extends XMLFilterImpl
      */
     public void endElement( String uri, String localName, String qName ) throws SAXException
     {
-        write( "</" );
+        write( ETAGO + "/" );
         writeName( uri, localName, qName, true );
-        write( '>' );
+        write( ETAGC );
         if( elementLevel == 1 )
         {
             write( '\n' );
@@ -576,11 +584,11 @@ public class XMLWriter extends XMLFilterImpl
      */
     public void processingInstruction( String target, String data ) throws SAXException
     {
-        write( "<?" );
+        write( PIO );
         write( target );
         write( ' ' );
         write( data );
-        write( "?>" );
+        write( PIC );
         if( elementLevel < 1 )
         {
             write( '\n' );
@@ -621,7 +629,7 @@ public class XMLWriter extends XMLFilterImpl
             throws SAXException
     {
         nsSupport.pushContext();
-        write( '<' );
+        write( ETAGO );
         writeName( uri, localName, qName, true );
         writeAttributes( atts );
         if( elementLevel == 1 )
@@ -629,7 +637,7 @@ public class XMLWriter extends XMLFilterImpl
             forceNSDecls();
         }
         writeNSDecls();
-        write( "/>" );
+        write( "/" + ETAGC );
         super.startElement( uri, localName, qName, atts );
         super.endElement( uri, localName, qName );
     }
@@ -1081,8 +1089,8 @@ public class XMLWriter extends XMLFilterImpl
             default:
                 if( ch[ i ] > '\u007f' )
                 {
-                    write( "&#" );
-                    write( Integer.toString( ch[ i ] ) );
+                    write( "&#x" );
+                    write( Integer.toString( ch[ i ], 16 ) );
                     write( ';' );
                 }
                 else
