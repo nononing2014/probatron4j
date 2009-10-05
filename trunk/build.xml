@@ -85,7 +85,6 @@
       <zipfileset dir="${etc}" prefix="etc"/>
       <zipfileset dir="." includes="build.xml"/>
     </zip>
-
   </target>
 
   <target name="clean" description="clean up">
