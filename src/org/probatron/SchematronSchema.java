@@ -23,7 +23,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.net.URLConnection;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -32,17 +34,26 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
+
+import com.megginson.sax.XMLWriter;
 
 public class SchematronSchema
 {
     private byte[] schemaAsBytes;
     static Logger logger = Logger.getLogger( SchematronSchema.class );
+    private Session session;
+    private URL url;
 
 
-    public SchematronSchema( URL url )
+    public SchematronSchema( Session session, URL url )
     {
+        this.session = session;
         logger.debug( "Constructing from URL: " + url.toString() );
         this.schemaAsBytes = Utils.derefUrl( url );
+        this.url = url;
     }
 
 
@@ -62,15 +73,36 @@ public class SchematronSchema
 
     public ValidationReport validateCandidate( URL url )
     {
-        byte[] ba = Utils.derefUrl( url );
-        ByteArrayInputStream bis = new ByteArrayInputStream( ba );
-        ValidationReport vr = validateCandidate( bis );
-        Utils.streamClose( bis );
+        ValidationReport vr = null;
+
+        InputStream is = null;
+        try
+        {
+            URLConnection conn = url.openConnection();
+            conn.connect();
+            is = conn.getInputStream();
+            vr = validateCandidate( is );
+        }
+        catch( IOException e )
+        {
+            logger.fatal( e.getMessage() );
+        }
+        finally
+        {
+            Utils.streamClose( is );
+        }
+
         return vr;
     }
 
 
-    private ValidationReport validateCandidate( InputStream is )
+    static void doIncludePreprocess( byte[] schemaAsBytes, ByteArrayOutputStream baos )
+    {
+
+    }
+
+
+    private ValidationReport validateCandidate( InputStream candidateStream )
     {
         JarUriResolver jur = new JarUriResolver();
         TransformerFactory tf = Utils.getTransformerFactory();
@@ -84,18 +116,20 @@ public class SchematronSchema
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] interim = null;
 
-            // Step 1. pre-process schema
-            logger.debug( "Running pre-process transform #1" );
-            Source xsltSource = jur.resolve( "iso_dsdl_include.xsl", null );
-            t = tf.newTransformer( xsltSource );
-            t.transform( new StreamSource( new ByteArrayInputStream( this.schemaAsBytes ) ),
-                    new StreamResult( baos ) );
+
+            // Step 1. do the inclusion
+            logger.debug( "Performing inclusion ..." );
+            XMLReader reader = XMLReaderFactory.createXMLReader();
+            IncludingFilter filter = new IncludingFilter( url, true );
+            filter.setParent( reader );
+            filter.setContentHandler( new XMLWriter( new OutputStreamWriter( baos ) ) );
+            filter.parse( new InputSource( new ByteArrayInputStream( this.schemaAsBytes ) ) );
             interim = baos.toByteArray();
             baos.reset();
 
             // Step 2. second pre-proc
-            logger.debug( "Running pre-process transform #2" );
-            xsltSource = jur.resolve( "iso_abstract_expand.xsl", null );
+            logger.debug( "Running abstract template expansion transform ..." );
+            Source xsltSource = jur.resolve( "iso_abstract_expand.xsl", null );
             t = tf.newTransformer( xsltSource );
             t.transform( new StreamSource( new ByteArrayInputStream( interim ) ),
                     new StreamResult( baos ) );
@@ -103,13 +137,13 @@ public class SchematronSchema
             baos.reset();
 
             // Step 3. compile schema to XSLT
-            logger.debug( "Transforming schema to XSLT" );
+            logger.debug( "Transforming schema to XSLT ..." );
             xsltSource = jur.resolve( "iso_svrl_for_xslt2.xsl", null );
             t = tf.newTransformer( xsltSource );
             t.setParameter( "full-path-notation", "4" );
-            if( Driver.phase != null )
+            if( session.getPhase() != null )
             {
-                t.setParameter( "phase", Driver.phase );
+                t.setParameter( "phase", session.getPhase() );
             }
             t.transform( new StreamSource( new ByteArrayInputStream( interim ) ),
                     new StreamResult( baos ) );
@@ -120,7 +154,7 @@ public class SchematronSchema
             logger.debug( "Applying XSLT to candidate" );
             xsltSource = new StreamSource( new ByteArrayInputStream( interim ) );
             t = tf.newTransformer( xsltSource );
-            t.transform( new StreamSource( is ), new StreamResult( baos ) );
+            t.transform( new StreamSource( candidateStream ), new StreamResult( baos ) );
             vr = new ValidationReport( baos.toByteArray() );
 
         }
@@ -134,6 +168,12 @@ public class SchematronSchema
 
         return vr;
 
+    }
+
+
+    public URL getUrl()
+    {
+        return url;
     }
 
 }

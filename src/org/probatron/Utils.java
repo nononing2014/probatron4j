@@ -37,6 +37,7 @@ import org.apache.log4j.Logger;
 
 public class Utils
 {
+    public final static String SCHEMATRON_NAME = "http://purl.oclc.org/dsdl/schematron";
     public static String SVRL_NAME = "http://purl.oclc.org/dsdl/svrl";
     private static final String PROPERTY_TRAX_IMPLEMENTATION = "javax.xml.transform.TransformerFactory";
     private static final String SAXON_TRAX_CLASS = "net.sf.saxon.TransformerFactoryImpl";
@@ -44,6 +45,7 @@ public class Utils
     final public static int CLOSE_NONE = 0x0000;
     final public static int CLOSE_IN = 0x0001;
     final public static int CLOSE_OUT = 0x0010;
+    
 
     static Logger logger = Logger.getLogger( Utils.class );
 

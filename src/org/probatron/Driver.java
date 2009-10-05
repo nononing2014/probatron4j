@@ -20,7 +20,6 @@
 package org.probatron;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -31,14 +30,9 @@ public class Driver
     private final static String PROPERTY_LOGLVL = "property://probatron.org/log-level";
     private final static String DEFAULT_LOGLVL = "WARN";
     static Logger logger = Logger.getLogger( Driver.class );
-    static String candidateDocArg;
-    static String schemaDocArg;
-    static SchematronSchema theSchema;
     static int APP_EXIT_FAIL = - 1;
-    static int APP_EXIT_OKAY = 0;
-    static boolean physicalLocators = true;
-    static boolean compact = true;
-    static String phase;
+    static int APP_EXIT_OKAY = 0;    
+    static Session theSession = new Session();
 
     static
     {
@@ -63,7 +57,9 @@ public class Driver
         System.err.println( "-p<phase> Validate using the phase named <phase>" );
         // TODO        
         //        System.err.println( "-q0|1     Do not [or do] validate the Schematron schema itself" );
-        System.err.println( "-r0|1     Richness of SVRL report (0=most compact)" );
+        System.err.println( "-r0       Output report as terse SVRL" );
+        System.err.println( "-r1       Output report as verbose SVRL" );
+       // System.err.println( "-r2       Output report as the original instance with SVRL merged in situ" );
         System.err.println( "-v        Show version info and halt" );
     }
 
@@ -73,18 +69,15 @@ public class Driver
         logger.debug( "Handling command line argument: " + arg );
         if( arg.equals( "-n1" ) || arg.equals( "-n0" ) )
         {
-            physicalLocators = arg.equals( "-n1" );
-            logger.debug( "Setting option (use physical locators): " + physicalLocators );
+            theSession.setUsePhysicalLocators( arg.equals( "-n1" ) );
         }
-        else if( arg.equals( "-r1" ) || arg.equals( "-r0" ) )
+        else if( arg.startsWith( "-r" ) )
         {
-            compact = arg.equals( "-r0" );
-            logger.debug( "Setting option (compact): " + compact );
+            theSession.setReportFormat( new Integer(arg.substring( 2, arg.length())).intValue() );
         }
         else if( arg.startsWith( "-p" ) )
         {
-            phase = arg.substring( 2, arg.length() );
-            logger.debug( "Using phase: " + phase );
+            theSession.setPhase( arg.substring( 2, arg.length() ) );
         }
         else
         {
@@ -133,28 +126,17 @@ public class Driver
             }
         }
 
-        candidateDocArg = fixArg( args[ args.length - 2 ] );
-        schemaDocArg = fixArg( args[ args.length - 1 ] );
-
-        logger.debug( "Candidate document is:" + candidateDocArg );
-        logger.debug( "Schema document is:" + schemaDocArg );
+        String candidate = fixArg( args[ args.length - 2 ] );
+        theSession.setSchemaDoc( fixArg( args[ args.length - 1 ] ) );
 
         try
         {
-            theSchema = new SchematronSchema( new URL( schemaDocArg ) );
-            ValidationReport vr = theSchema.validateCandidate( new URL( candidateDocArg ) );
-
-            if( physicalLocators )
-            {
-                vr.annotateWithLocators( new URL( candidateDocArg ) );
-            }
-
+            ValidationReport vr = theSession.doValidation( candidate );
             vr.streamOut( System.out );
         }
         catch( MalformedURLException e )
         {
-            logger.fatal( e.getMessage() );
-            System.exit( APP_EXIT_FAIL );
+            logger.fatal( e );
         }
 
         logger.info( "Done. Elapsed time (ms):" + ( System.currentTimeMillis() - t ) );

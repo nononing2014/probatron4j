@@ -38,7 +38,7 @@ public class JarUriResolver implements URIResolver
         logger.debug( "Resolving stylesheet URI: " + href );
         InputStream is = JarUriResolver.class.getResourceAsStream( "/resource/stylesheet/"
                 + href );
-        return new StreamSource( is );
+        return new StreamSource( is );        
     }
 
 }
