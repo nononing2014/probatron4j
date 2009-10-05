@@ -105,8 +105,8 @@ public class SchematronSchema
     private ValidationReport validateCandidate( InputStream candidateStream )
     {
         JarUriResolver jur = new JarUriResolver();
-        TransformerFactory tf = Utils.getTransformerFactory();
-        tf.setURIResolver( jur );
+        TransformerFactory jarAwareTransformerFactory = Utils.getTransformerFactory();
+        jarAwareTransformerFactory.setURIResolver( jur );
 
         ValidationReport vr = null;
 
@@ -115,8 +115,7 @@ public class SchematronSchema
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] interim = null;
-
-
+            
             // Step 1. do the inclusion
             logger.debug( "Performing inclusion ..." );
             XMLReader reader = XMLReaderFactory.createXMLReader();
@@ -127,10 +126,10 @@ public class SchematronSchema
             interim = baos.toByteArray();
             baos.reset();
 
-            // Step 2. second pre-proc
+            // Step 2. for abstract template processing
             logger.debug( "Running abstract template expansion transform ..." );
             Source xsltSource = jur.resolve( "iso_abstract_expand.xsl", null );
-            t = tf.newTransformer( xsltSource );
+            t = jarAwareTransformerFactory.newTransformer( xsltSource );
             t.transform( new StreamSource( new ByteArrayInputStream( interim ) ),
                     new StreamResult( baos ) );
             interim = baos.toByteArray();
@@ -139,7 +138,7 @@ public class SchematronSchema
             // Step 3. compile schema to XSLT
             logger.debug( "Transforming schema to XSLT ..." );
             xsltSource = jur.resolve( "iso_svrl_for_xslt2.xsl", null );
-            t = tf.newTransformer( xsltSource );
+            t = jarAwareTransformerFactory.newTransformer( xsltSource );
             t.setParameter( "full-path-notation", "4" );
             if( session.getPhase() != null )
             {
@@ -153,7 +152,7 @@ public class SchematronSchema
             // Step 4. Apply XSLT to candidate
             logger.debug( "Applying XSLT to candidate" );
             xsltSource = new StreamSource( new ByteArrayInputStream( interim ) );
-            t = tf.newTransformer( xsltSource );
+            t = Utils.getTransformerFactory().newTransformer( xsltSource );
             t.transform( new StreamSource( candidateStream ), new StreamResult( baos ) );
             vr = new ValidationReport( baos.toByteArray() );
 
