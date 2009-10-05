@@ -69,6 +69,11 @@ public class ValidationReport
         }
     }
     
+    public byte[] reportAsBytes()
+    {
+        return this.reportBytes;
+    }
+    
     public void mergeSvrlIntoCandidate(Session session, URL candidateUrl )
     {
         
