@@ -1,21 +1,20 @@
-/*  This file is part of the source of
+/*
+ * This file is part of the source of
  * 
- *  Probatron4J - a Schematron validator for Java(tm)
+ * Probatron4J - a Schematron validator for Java(tm)
  * 
- *  Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
- *   
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2009 Griffin Brown Digitial Publishing Ltd
+ * 
+ * This program is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.probatron;
@@ -44,6 +43,10 @@ public class ValidationReport
     private SvrlHarvestHandler harvestHandler = new SvrlHarvestHandler( this );
     private LocationMapHandler locationMapHandler = new LocationMapHandler( this );
     NamespacePrefixMappings nsMap = new NamespacePrefixMappings();
+    
+    final public static int REPORT_SVRL_COMPACT = 0;
+    final public static int REPORT_SVRL_FULL = 1;
+    final public static int REPORT_SVRL_MERGED = 2;
 
 
     public ValidationReport( byte[] ba )
@@ -65,9 +68,14 @@ public class ValidationReport
             e.printStackTrace();
         }
     }
+    
+    public void mergeSvrlIntoCandidate(Session session, URL candidateUrl )
+    {
+        
+    }
 
 
-    public void annotateWithLocators( URL candidateUrl )
+    public void annotateWithLocators( Session session, URL candidateUrl )
     {
         try
         {
@@ -84,7 +92,7 @@ public class ValidationReport
 
             // final prep of SVRL report
             XMLReader reader = XMLReaderFactory.createXMLReader();
-            EnrichmentFilter filter = new EnrichmentFilter( this );
+            EnrichmentFilter filter = new EnrichmentFilter( session, this );
             filter.setParent( reader );
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             filter.setContentHandler( new XMLWriter( new OutputStreamWriter( baos ) ) );

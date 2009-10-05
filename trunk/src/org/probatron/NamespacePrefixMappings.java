@@ -84,7 +84,7 @@ public class NamespacePrefixMappings
 
             int n2 = ret.indexOf( "}" );
             String uri = ret.substring( n1 +1, n2 );
-            logger.debug( "Fixing up URI: <" + uri + ">" );
+            logger.trace( "Fixing up URI: <" + uri + ">" );
             String prefix = prefixForNs( uri );
             ret = ret.replaceAll( "\\{" + uri + "\\}", prefix + ":" );
 

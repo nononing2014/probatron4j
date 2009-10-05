@@ -34,11 +34,13 @@ public class EnrichmentFilter extends XMLFilterImpl
     static Logger logger = Logger.getLogger( EnrichmentFilter.class );
     private ValidationReport rpt;
     private Stack<String> ancestors = new Stack<String>();
+    private Session session;
 
-
-    public EnrichmentFilter( ValidationReport rpt )
+    
+    public EnrichmentFilter( Session session, ValidationReport rpt )
     {
         this.rpt = rpt;
+        this.session = session;
     }
 
 
@@ -46,8 +48,9 @@ public class EnrichmentFilter extends XMLFilterImpl
             Attributes atts ) throws SAXException
     {
         ancestors.push( localName );
+        boolean isSvrlElement = namespaceURI.equals( Utils.SVRL_NAME );
 
-        if( namespaceURI.equals( Utils.SVRL_NAME )
+        if( isSvrlElement
                 && ( localName.equals( "successful-report" ) || localName
                         .equals( "failed-assert" ) ) )
         {
@@ -58,7 +61,7 @@ public class EnrichmentFilter extends XMLFilterImpl
             newAttributes.addAttribute( "", "location", "location", "CDATA", fixed );
             atts = newAttributes;
 
-            if( Driver.physicalLocators )
+            if( session.usesPhysicalLocators() )
             {
                 PhysicalLocation loc = rpt.locMap.get( Utils.trimAttributePart( pseudo ) );
 
@@ -70,12 +73,12 @@ public class EnrichmentFilter extends XMLFilterImpl
                 atts = loc.addAsAttributes( newAttributes );
             }
         }
-        else if( namespaceURI.equals( Utils.SVRL_NAME )
-                && ( localName.equals( "ns-prefix-in-attribute-values" ) ) )
+        else if( isSvrlElement && ( localName.equals( "ns-prefix-in-attribute-values" ) ) )
         {
             return; // having done nothing
         }
-        else if( Driver.compact && namespaceURI.equals( Utils.SVRL_NAME )
+        else if( session.getReportFormat() != ValidationReport.REPORT_SVRL_FULL
+                && isSvrlElement
                 && ( localName.equals( "fired-rule" ) || localName.equals( "active-pattern" ) ) )
         {
             return; // having done nothing
@@ -83,8 +86,7 @@ public class EnrichmentFilter extends XMLFilterImpl
 
         super.startElement( namespaceURI, localName, qualifiedName, atts );
 
-        if( namespaceURI.equals( Utils.SVRL_NAME )
-                && ( localName.equals( "schematron-output" ) ) )
+        if( isSvrlElement && ( localName.equals( "schematron-output" ) ) )
         {
             // insert a bunch of synthesis namespace/prefix mappings
             ArrayList<AttributesImpl> attsArray = this.rpt.nsMap.asAttributes();
@@ -110,9 +112,10 @@ public class EnrichmentFilter extends XMLFilterImpl
     @Override
     public void characters( char[] ch, int start, int length ) throws SAXException
     {
-        
-        // we only strip ws children of the root element
-        if( ! Driver.compact || ! ancestors.peek().equals( "schematron-output" ) )
+
+        // simple case: we're using verbose mode or we're in a context where we want to keep everything
+        if( session.getReportFormat() == ValidationReport.REPORT_SVRL_FULL
+                || ! ancestors.peek().equals( "schematron-output" ) )
         {
             super.characters( ch, start, length );
             return;
@@ -124,7 +127,6 @@ public class EnrichmentFilter extends XMLFilterImpl
             char c = ch[ i ];
             if( ! ( c == ' ' || c == '\t' || c == '\n' ) )
             {
-
                 super.characters( ch, start, length );
                 return;
             }
@@ -144,7 +146,8 @@ public class EnrichmentFilter extends XMLFilterImpl
         {
             return; // having done nothing
         }
-        else if( Driver.compact && namespaceURI.equals( Utils.SVRL_NAME )
+        else if( session.getReportFormat() != ValidationReport.REPORT_SVRL_FULL
+                && namespaceURI.equals( Utils.SVRL_NAME )
                 && ( localName.equals( "fired-rule" ) || localName.equals( "active-pattern" ) ) )
         {
             return; // having done nothing
