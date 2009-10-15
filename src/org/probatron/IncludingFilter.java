@@ -40,6 +40,7 @@ public class IncludingFilter extends XMLFilterImpl
     static Logger logger = Logger.getLogger( IncludingFilter.class );
     private boolean outermost;
     private URL base;
+    boolean foundAbstractPatterns;
 
 
     public IncludingFilter( URL base, boolean outermost )
@@ -80,6 +81,16 @@ public class IncludingFilter extends XMLFilterImpl
     {
         boolean isIncludeElement = localName.equals( "include" )
                 && uri.equals( Utils.SCHEMATRON_NAME );
+
+        boolean isAbstractPattern = localName.equals( "pattern" )
+                && uri.equals( Utils.SCHEMATRON_NAME )
+                && atts != null
+                && atts.getValue( "abstract" ) != null;
+        
+        if( isAbstractPattern )
+        {
+            this.foundAbstractPatterns = true;
+        }
 
         if( isIncludeElement )
         {
