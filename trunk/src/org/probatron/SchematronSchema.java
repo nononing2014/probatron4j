@@ -115,7 +115,7 @@ public class SchematronSchema
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] interim = null;
-            
+
             // Step 1. do the inclusion
             logger.debug( "Performing inclusion ..." );
             XMLReader reader = XMLReaderFactory.createXMLReader();
@@ -126,15 +126,21 @@ public class SchematronSchema
             interim = baos.toByteArray();
             baos.reset();
 
-            // Step 2. for abstract template processing
-            logger.debug( "Running abstract template expansion transform ..." );
-            Source xsltSource = jur.resolve( "iso_abstract_expand.xsl", null );
-            t = jarAwareTransformerFactory.newTransformer( xsltSource );
-            t.transform( new StreamSource( new ByteArrayInputStream( interim ) ),
-                    new StreamResult( baos ) );
-            interim = baos.toByteArray();
-            baos.reset();
+            Source xsltSource = null;
 
+            // optimisation - if no abstract patterns exist, this step can be skipped
+            if( filter.foundAbstractPatterns )
+            {
+                // Step 2. for abstract template processing
+                logger.debug( "Running abstract template expansion transform ..." );
+                xsltSource = jur.resolve( "iso_abstract_expand.xsl", null );
+                t = jarAwareTransformerFactory.newTransformer( xsltSource );
+                t.transform( new StreamSource( new ByteArrayInputStream( interim ) ),
+                        new StreamResult( baos ) );
+                interim = baos.toByteArray();
+                baos.reset();
+            }            
+            
             // Step 3. compile schema to XSLT
             logger.debug( "Transforming schema to XSLT ..." );
             xsltSource = jur.resolve( "iso_svrl_for_xslt2.xsl", null );
@@ -162,7 +168,7 @@ public class SchematronSchema
             logger.fatal( e.getMessage() );
             throw new RuntimeException(
                     "Cannot instantiate XSLT transformer, or transformation failure: "
-                            + e.getMessage(), e );
+                            + e, e );
         }
 
         return vr;
