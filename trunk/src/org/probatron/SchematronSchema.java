@@ -109,8 +109,8 @@ public class SchematronSchema
         jarAwareTransformerFactory.setURIResolver( jur );
 
         ValidationReport vr = null;
-
         Transformer t = null;
+        
         try
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -139,14 +139,14 @@ public class SchematronSchema
                         new StreamResult( baos ) );
                 interim = baos.toByteArray();
                 baos.reset();
-            }            
-            
+            }
+
             // Step 3. compile schema to XSLT
             logger.debug( "Transforming schema to XSLT ..." );
             xsltSource = jur.resolve( "iso_svrl_for_xslt2.xsl", null );
             t = jarAwareTransformerFactory.newTransformer( xsltSource );
-            t.setParameter( "full-path-notation", "4" );
-            if( session.getPhase() != null )
+            t.setParameter( "full-path-notation", "4" ); // uses custom param for Probatron
+            if( session.getPhase() != null ) // TODO: allow multiple phases
             {
                 t.setParameter( "phase", session.getPhase() );
             }
@@ -155,11 +155,24 @@ public class SchematronSchema
             interim = baos.toByteArray();
             baos.reset();
 
+            // Utils.writeBytesToFile( interim, "interim.xml" );
+
             // Step 4. Apply XSLT to candidate
             logger.debug( "Applying XSLT to candidate" );
             xsltSource = new StreamSource( new ByteArrayInputStream( interim ) );
-            t = Utils.getTransformerFactory().newTransformer( xsltSource );
-            t.transform( new StreamSource( candidateStream ), new StreamResult( baos ) );
+            
+            if( this.url != null )
+            {
+                logger.debug( "Setting URL base for compiled stylesheet to "
+                        + this.url.toString() );
+                xsltSource.setSystemId( this.url.toExternalForm() );
+            }
+
+            TransformerFactory tf = Utils.getTransformerFactory();
+            t = tf.newTransformer( xsltSource );            
+
+            t.transform( new StreamSource( candidateStream, url.toExternalForm() ),
+                    new StreamResult( baos ) );
             vr = new ValidationReport( baos.toByteArray() );
 
         }
@@ -167,8 +180,7 @@ public class SchematronSchema
         {
             logger.fatal( e.getMessage() );
             throw new RuntimeException(
-                    "Cannot instantiate XSLT transformer, or transformation failure: "
-                            + e, e );
+                    "Cannot instantiate XSLT transformer, or transformation failure: " + e, e );
         }
 
         return vr;
