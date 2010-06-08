@@ -104,7 +104,7 @@ public class LocationMapHandler implements ContentHandler, LexicalHandler
         tc.onStartElement( uri, localName );
         this.rpt.locMap.handleMapping( this.tc, this.loc );
 
-        if( uri != "" )
+        if( uri.length() > 0 )
         {
             String regPrefix = this.rpt.nsMap.prefixForNs( uri );
             if( regPrefix == null )
