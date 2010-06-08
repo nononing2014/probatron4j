@@ -29,12 +29,14 @@ import java.net.URLConnection;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -45,15 +47,18 @@ public class SchematronSchema
     private byte[] schemaAsBytes;
     static Logger logger = Logger.getLogger( SchematronSchema.class );
     private Session session;
-    private URL url;
+    private URL schemaUrl;
 
 
     public SchematronSchema( Session session, URL url )
     {
+        assert this.schemaUrl != null : "null schema URL";
+
         this.session = session;
         logger.debug( "Constructing from URL: " + url.toString() );
         this.schemaAsBytes = Utils.derefUrl( url );
-        this.url = url;
+        this.schemaUrl = url;
+
     }
 
 
@@ -71,14 +76,14 @@ public class SchematronSchema
     }
 
 
-    public ValidationReport validateCandidate( URL url )
+    public ValidationReport validateCandidate( URL candidateUrl )
     {
         ValidationReport vr = null;
+        InputStream is = null; // the stream for the candidate
 
-        InputStream is = null;
         try
         {
-            URLConnection conn = url.openConnection();
+            URLConnection conn = candidateUrl.openConnection();
             conn.connect();
             is = conn.getInputStream();
             vr = validateCandidate( is );
@@ -98,7 +103,7 @@ public class SchematronSchema
 
     static void doIncludePreprocess( byte[] schemaAsBytes, ByteArrayOutputStream baos )
     {
-
+    // do nothing
     }
 
 
@@ -110,7 +115,7 @@ public class SchematronSchema
 
         ValidationReport vr = null;
         Transformer t = null;
-        
+
         try
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -119,7 +124,7 @@ public class SchematronSchema
             // Step 1. do the inclusion
             logger.debug( "Performing inclusion ..." );
             XMLReader reader = XMLReaderFactory.createXMLReader();
-            IncludingFilter filter = new IncludingFilter( url, true );
+            IncludingFilter filter = new IncludingFilter( schemaUrl, true );
             filter.setParent( reader );
             filter.setContentHandler( new XMLWriter( new OutputStreamWriter( baos ) ) );
             filter.parse( new InputSource( new ByteArrayInputStream( this.schemaAsBytes ) ) );
@@ -160,27 +165,34 @@ public class SchematronSchema
             // Step 4. Apply XSLT to candidate
             logger.debug( "Applying XSLT to candidate" );
             xsltSource = new StreamSource( new ByteArrayInputStream( interim ) );
-            
-            if( this.url != null )
-            {
-                logger.debug( "Setting URL base for compiled stylesheet to "
-                        + this.url.toString() );
-                xsltSource.setSystemId( this.url.toExternalForm() );
-            }
+
+            logger.debug( "Setting URL base for compiled stylesheet to "
+                    + this.schemaUrl.toString() );
+            xsltSource.setSystemId( this.schemaUrl.toExternalForm() );
 
             TransformerFactory tf = Utils.getTransformerFactory();
-            t = tf.newTransformer( xsltSource );            
+            t = tf.newTransformer( xsltSource );
 
-            t.transform( new StreamSource( candidateStream, url.toExternalForm() ),
+            t.transform( new StreamSource( candidateStream, schemaUrl.toExternalForm() ),
                     new StreamResult( baos ) );
             vr = new ValidationReport( baos.toByteArray() );
 
         }
-        catch( Exception e )
+        catch( TransformerException e )
         {
             logger.fatal( e.getMessage() );
             throw new RuntimeException(
                     "Cannot instantiate XSLT transformer, or transformation failure: " + e, e );
+        }
+        catch( IOException e )
+        {
+            logger.fatal( e.getMessage() );
+            throw new RuntimeException( "IOException: " + e, e );
+        }
+        catch( SAXException e )
+        {
+            logger.fatal( e.getMessage() );
+            throw new RuntimeException( "SAXException: " + e, e );
         }
 
         return vr;
@@ -190,7 +202,7 @@ public class SchematronSchema
 
     public URL getUrl()
     {
-        return url;
+        return schemaUrl;
     }
 
 }

@@ -33,10 +33,10 @@ public class EnrichmentFilter extends XMLFilterImpl
 {
     static Logger logger = Logger.getLogger( EnrichmentFilter.class );
     private ValidationReport rpt;
-    private Stack<String> ancestors = new Stack<String>();
+    private Stack< String > ancestors = new Stack< String >();
     private Session session;
 
-    
+
     public EnrichmentFilter( Session session, ValidationReport rpt )
     {
         this.rpt = rpt;
@@ -69,8 +69,10 @@ public class EnrichmentFilter extends XMLFilterImpl
                 {
                     logger.warn( "Cannot find location of psuedo-XPath: <" + pseudo + ">" );
                 }
-
-                atts = loc.addAsAttributes( newAttributes );
+                else
+                {
+                    atts = loc.addAsAttributes( newAttributes );
+                }
             }
         }
         else if( isSvrlElement && ( localName.equals( "ns-prefix-in-attribute-values" ) ) )
@@ -89,8 +91,8 @@ public class EnrichmentFilter extends XMLFilterImpl
         if( isSvrlElement && ( localName.equals( "schematron-output" ) ) )
         {
             // insert a bunch of synthesis namespace/prefix mappings
-            ArrayList<AttributesImpl> attsArray = this.rpt.nsMap.asAttributes();
-            Iterator<AttributesImpl> iter = attsArray.iterator();
+            ArrayList< AttributesImpl > attsArray = this.rpt.nsMap.asAttributes();
+            Iterator< AttributesImpl > iter = attsArray.iterator();
 
             while( iter.hasNext() )
             {
@@ -113,9 +115,10 @@ public class EnrichmentFilter extends XMLFilterImpl
     public void characters( char[] ch, int start, int length ) throws SAXException
     {
 
-        // simple case: we're using verbose mode or we're in a context where we want to keep everything
+        // simple case: we're using verbose mode or we're in a context where we want to keep
+        // everything
         if( session.getReportFormat() == ValidationReport.REPORT_SVRL_FULL
-                || ! ancestors.peek().equals( "schematron-output" ) )
+                || !ancestors.peek().equals( "schematron-output" ) )
         {
             super.characters( ch, start, length );
             return;
@@ -125,7 +128,7 @@ public class EnrichmentFilter extends XMLFilterImpl
         for( int i = start; i < start + length; i++ )
         {
             char c = ch[ i ];
-            if( ! ( c == ' ' || c == '\t' || c == '\n' ) )
+            if( !( c == ' ' || c == '\t' || c == '\n' ) )
             {
                 super.characters( ch, start, length );
                 return;
