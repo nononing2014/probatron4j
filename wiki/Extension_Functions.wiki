@@ -1,6 +1,6 @@
 #summary Probatron4J makes a number of custom XPath extension functions available.
 
-= Introduction =
+= XPath Extension Functions =
 
 Probatron4J makes a number of custom XPath extension functions available.
 
@@ -39,6 +39,13 @@ Returns `true` if `$arg` is a lexically valid 10 digit ISBN with a valid checksu
 
 == is-valid-isbn-13 ==
 
-`pr:is-valid-isbn13($arg as xs:string) as xs:boolean`
+`pr:is-valid-isbn-13($arg as xs:string) as xs:boolean`
 
 Returns `true` if `$arg` is a lexically valid 13 digit ISBN with a valid checksum digit; otherwise returns `false`.
+
+
+== is-valid-issn ==
+
+`pr:is-valid-issn($arg as xs:string) as xs:boolean`
+
+Returns `true` if `$arg` is a lexically valid ISSN with a valid checksum digit; otherwise returns `false`.
