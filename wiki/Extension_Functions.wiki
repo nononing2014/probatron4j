@@ -32,13 +32,13 @@ For example:
 
 == is-valid-isbn ==
 
-`pr:is-valid-isbn($arg as xs:string?) as xs:boolean`
+`pr:is-valid-isbn($arg as xs:string) as xs:boolean`
 
 Returns `true` if the passed string is a lexically valid 10 digit ISBN with a valid checksum digit; otherwise returns false.
 
 
 == is-valid-isbn13 ==
 
-`pr:is-valid-isbn13($arg as xs:string?) as xs:boolean`
+`pr:is-valid-isbn13($arg as xs:string) as xs:boolean`
 
 Returns `true` if the passed string is a lexically valid 13 digit ISBN with a valid checksum digit; otherwise returns false.
