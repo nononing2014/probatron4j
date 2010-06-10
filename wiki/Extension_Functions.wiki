@@ -1,0 +1,35 @@
+#summary Probatron4J makes a number of custom XPath extension functions available.
+
+= Introduction =
+
+Probatron4J makes a number of custom XPath extension functions available.
+
+These functions are in the Namespace "`http://www.probatron.org/functions`", which must be bound and used when using these functions. 
+
+For example:
+
+{{{
+<?xml version="1.0"?>
+<sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+  xmlns:pr="http://www.probatron.org/functions">
+
+ <!-- we bind the 'pr' prefix for use in function calls -->
+ <sch:ns prefix="pr" uri="http://www.probatron.org/functions"/>
+
+ <sch:pattern>
+    <sch:rule id="isbn-test" flag="warn" context="isbn">
+      <!-- using an extension function here -->
+      <sch:assert test="pr:is-valid-isbn(.)">Not an ISBN</sch:assert>
+    </sch:rule>
+  </sch:pattern>
+
+</sch:schema>
+
+}}}
+
+
+= Details =
+
+== is-valid-isbn ==
+
+== is-valid-isbn13 ==
