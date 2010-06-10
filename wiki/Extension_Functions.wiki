@@ -37,7 +37,7 @@ For example:
 Returns `true` if `$arg` is a lexically valid 10 digit ISBN with a valid checksum digit; otherwise returns `false`.
 
 
-== is-valid-isbn13 ==
+== is-valid-isbn-13 ==
 
 `pr:is-valid-isbn13($arg as xs:string) as xs:boolean`
 
