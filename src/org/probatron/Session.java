@@ -47,7 +47,7 @@ public class Session
     {
         ValidationReport vr = null;
 
-        theSchema = new SchematronSchema( this, new URL( this.schemaDoc ) );
+        theSchema = new SchematronSchema( new URL( this.schemaDoc ) );
         vr = theSchema.validateCandidate( new URL( candidate ) );
 
         if( physicalLocators )

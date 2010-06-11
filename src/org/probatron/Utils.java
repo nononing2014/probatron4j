@@ -38,6 +38,7 @@ public class Utils
 {
     public final static String SCHEMATRON_NAME = "http://purl.oclc.org/dsdl/schematron";
     public static final String SVRL_NAME = "http://purl.oclc.org/dsdl/svrl";
+    public static final String PROBATRON_FUNCTION_NAME = "http://www.probatron.org/functions";
     private static final String PROPERTY_TRAX_IMPLEMENTATION = "javax.xml.transform.TransformerFactory";
     private static final String SAXON_TRAX_CLASS = "net.sf.saxon.TransformerFactoryImpl";
     private final static int READ_BUFFER_SIZE = 32768;
