@@ -45,6 +45,7 @@
     <javac source="1.5" srcdir="${src}" destdir="${build}">
       <classpath>
         <pathelement location="${lib}/log4j-1.2.15.jar"/>
+      	<pathelement location="${lib}/saxon9he.jar"/>
       </classpath>
     </javac>
   </target>

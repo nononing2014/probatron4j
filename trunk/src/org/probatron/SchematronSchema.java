@@ -34,6 +34,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import net.sf.saxon.s9api.SaxonApiException;
+import net.sf.saxon.s9api.Serializer;
+import net.sf.saxon.s9api.XsltCompiler;
+import net.sf.saxon.s9api.XsltExecutable;
+import net.sf.saxon.s9api.XsltTransformer;
+
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -46,15 +52,15 @@ public class SchematronSchema
 {
     private byte[] schemaAsBytes;
     static Logger logger = Logger.getLogger( SchematronSchema.class );
-    private Session session;
     private URL schemaUrl;
+    private JarUriResolver jur = new JarUriResolver();
 
 
-    public SchematronSchema( Session session, URL url )
+    public SchematronSchema(  URL url )
     {
         assert this.schemaUrl != null : "null schema URL";
 
-        this.session = session;
+      
         logger.debug( "Constructing from URL: " + url.toString() );
         this.schemaAsBytes = Utils.derefUrl( url );
         this.schemaUrl = url;
@@ -109,7 +115,7 @@ public class SchematronSchema
 
     private ValidationReport validateCandidate( InputStream candidateStream )
     {
-        JarUriResolver jur = new JarUriResolver();
+
         TransformerFactory jarAwareTransformerFactory = Utils.getTransformerFactory();
         jarAwareTransformerFactory.setURIResolver( jur );
 
@@ -146,36 +152,16 @@ public class SchematronSchema
                 baos.reset();
             }
 
-            // Step 3. compile schema to XSLT
-            logger.debug( "Transforming schema to XSLT ..." );
-            xsltSource = jur.resolve( "iso_svrl_for_xslt2.xsl", null );
-            t = jarAwareTransformerFactory.newTransformer( xsltSource );
-            t.setParameter( "full-path-notation", "4" ); // uses custom param for Probatron
-            if( session.getPhase() != null ) // TODO: allow multiple phases
-            {
-                t.setParameter( "phase", session.getPhase() );
-            }
-            t.transform( new StreamSource( new ByteArrayInputStream( interim ) ),
-                    new StreamResult( baos ) );
-            interim = baos.toByteArray();
-            baos.reset();
+           // Utils.writeBytesToFile( interim, "interim.xml" );
 
-            // Utils.writeBytesToFile( interim, "interim.xml" );
+            // Step 3. compile schema to XSLT
+            interim = compileToXslt( interim );
 
             // Step 4. Apply XSLT to candidate
-            logger.debug( "Applying XSLT to candidate" );
-            xsltSource = new StreamSource( new ByteArrayInputStream( interim ) );
+            interim = applyXsltSchema( candidateStream, interim );
 
-            logger.debug( "Setting URL base for compiled stylesheet to "
-                    + this.schemaUrl.toString() );
-            xsltSource.setSystemId( this.schemaUrl.toExternalForm() );
-
-            TransformerFactory tf = Utils.getTransformerFactory();
-            t = tf.newTransformer( xsltSource );
-
-            t.transform( new StreamSource( candidateStream, schemaUrl.toExternalForm() ),
-                    new StreamResult( baos ) );
-            vr = new ValidationReport( baos.toByteArray() );
+            // Generate the Validation report from the raw SVRL thus created
+            vr = new ValidationReport( interim );
 
         }
         catch( TransformerException e )
@@ -194,9 +180,68 @@ public class SchematronSchema
             logger.fatal( e.getMessage() );
             throw new RuntimeException( "SAXException: " + e, e );
         }
+        catch( SaxonApiException e )
+        {
+            logger.fatal( e.getMessage() );
+            throw new RuntimeException( "SaxonApiException: " + e, e );
+
+        }
 
         return vr;
 
+    }
+
+
+    private byte[] applyXsltSchema( InputStream candidateStream, byte[] interim )
+            throws SaxonApiException
+    {
+        logger.debug( "Applying XSLT version of schema to candidate" );
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        XsltCompiler comp = Runtime.getSaxonProcessor().newXsltCompiler();
+
+        Source ss = new StreamSource( new ByteArrayInputStream( interim ) );
+        XsltExecutable xx = comp.compile( ss );
+        XsltTransformer transformer = xx.load();
+        transformer.setSource( new StreamSource( candidateStream, schemaUrl.toExternalForm() ) );
+
+        Serializer ser = new Serializer();
+        ser.setOutputStream( baos );
+        transformer.setDestination( ser );
+
+        transformer.transform();
+
+        return baos.toByteArray();
+    }
+
+
+    private byte[] compileToXslt( byte[] interim ) throws TransformerException,
+            SaxonApiException
+    {
+        logger.debug( "Transforming schema to XSLT ..." );
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        XsltCompiler comp = Runtime.getSaxonProcessor().newXsltCompiler();
+        comp.setURIResolver( jur );
+        Source ss = jur.resolve( "iso_svrl_for_xslt2.xsl", null );
+        XsltExecutable xx = comp.compile( ss );
+        XsltTransformer transformer = xx.load();
+
+        transformer.setSource( new StreamSource( new ByteArrayInputStream( interim ) ) );
+
+        Serializer ser = new Serializer();
+        ser.setOutputStream( baos );
+        transformer.setDestination( ser );
+
+        transformer.transform();
+
+        interim = baos.toByteArray();
+
+        // Utils.writeBytesToFile( interim, "interim.xml" );
+
+        return interim;
     }
 
 
