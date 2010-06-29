@@ -48,19 +48,25 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import com.megginson.sax.XMLWriter;
 
+/**
+ * Represents a Schematron schema.
+ */
 public class SchematronSchema
 {
-    private byte[] schemaAsBytes;
     static Logger logger = Logger.getLogger( SchematronSchema.class );
+
+    private byte[] schemaAsBytes;
     private URL schemaUrl;
     private JarUriResolver jur = new JarUriResolver();
 
 
-    public SchematronSchema(  URL url )
+    /**
+     * Constructs an instance from the Schematron schema document located at the passed URL.
+     */
+    public SchematronSchema( URL url )
     {
         assert this.schemaUrl != null : "null schema URL";
 
-      
         logger.debug( "Constructing from URL: " + url.toString() );
         this.schemaAsBytes = Utils.derefUrl( url );
         this.schemaUrl = url;
@@ -68,6 +74,9 @@ public class SchematronSchema
     }
 
 
+    /**
+     * Constructs an instance from the Schematron schema document of the passed stream.
+     */
     public SchematronSchema( InputStream is )
     {
         logger.debug( "Constructing from InpuStream" );
@@ -82,6 +91,11 @@ public class SchematronSchema
     }
 
 
+    /**
+     * Applies this schema to the document located at the passed URL
+     * 
+     * @return the validation report generated
+     */
     public ValidationReport validateCandidate( URL candidateUrl )
     {
         ValidationReport vr = null;
@@ -152,7 +166,7 @@ public class SchematronSchema
                 baos.reset();
             }
 
-           // Utils.writeBytesToFile( interim, "interim.xml" );
+            // Utils.writeBytesToFile( interim, "interim.xml" );
 
             // Step 3. compile schema to XSLT
             interim = compileToXslt( interim );
@@ -245,6 +259,9 @@ public class SchematronSchema
     }
 
 
+    /**
+     * @return if this instance was constucted with URL returns that; otherwise null
+     */
     public URL getUrl()
     {
         return schemaUrl;

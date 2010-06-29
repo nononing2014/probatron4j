@@ -26,19 +26,16 @@ import net.sf.saxon.om.SequenceIterator;
 import net.sf.saxon.om.SingletonIterator;
 import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
-import net.sf.saxon.value.BooleanValue;
 import net.sf.saxon.value.SequenceType;
+import net.sf.saxon.value.StringValue;
 
 import org.probatron.Utils;
 
-import com.griffinbrown.xmltool.utils.ISSN;
-import com.griffinbrown.xmltool.utils.MalformedISSNException;
-
 @SuppressWarnings("serial")
-public class IsValidIssn extends ExtensionFunctionDefinition
+public class SystemId extends ExtensionFunctionDefinition
 {
     private static StructuredQName funcName = new StructuredQName( "pr",
-            Utils.PROBATRON_FUNCTION_NAME, "is-valid-issn" );
+            Utils.PROBATRON_FUNCTION_NAME, "system-id" );
 
 
     public StructuredQName getFunctionQName()
@@ -49,13 +46,13 @@ public class IsValidIssn extends ExtensionFunctionDefinition
 
     public int getMinimumNumberOfArguments()
     {
-        return 1;
+        return 0;
     }
 
 
     public int getMaximumNumberOfArguments()
     {
-        return 1;
+        return 0;
     }
 
 
@@ -67,43 +64,24 @@ public class IsValidIssn extends ExtensionFunctionDefinition
 
     public SequenceType getResultType( SequenceType[] suppliedArgumentTypes )
     {
-        return SequenceType.SINGLE_BOOLEAN;
+        return SequenceType.SINGLE_STRING;
     }
 
 
     public ExtensionFunctionCall makeCallExpression()
     {
-        return new IsValidIssnCall();
+        return new SystemIdCall();
     }
 
-    private static class IsValidIssnCall extends ExtensionFunctionCall
+    private static class SystemIdCall extends ExtensionFunctionCall
     {
 
         public SequenceIterator call( SequenceIterator[] arguments, XPathContext context )
                 throws XPathException
         {
-            boolean value = true;
+            String s = org.probatron.Runtime.getValidationContext().getVerbatimName();
 
-            ISSN issn = null;
-            try
-            {
-                SequenceIterator iter = arguments[ 0 ];
-                String candidate = iter.next().getStringValue();
-
-                issn = new ISSN( candidate );
-            }
-            catch( MalformedISSNException m )
-            {
-                value = false;
-            }
-
-            if( issn != null && !issn.hasCorrectChecksum() )
-            {
-                value = false;
-            }
-
-            return SingletonIterator.makeIterator( value ? BooleanValue.TRUE
-                    : BooleanValue.FALSE );
+            return SingletonIterator.makeIterator( new StringValue( s ) );
         }
 
     }

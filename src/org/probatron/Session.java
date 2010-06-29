@@ -19,11 +19,15 @@
 
 package org.probatron;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 public class Session
 {
@@ -43,25 +47,51 @@ public class Session
     }
 
 
-    public ValidationReport doValidation( String candidate ) throws MalformedURLException
+    public ValidationReport doValidation( String candidate ) throws MalformedURLException,
+            SAXException, IOException
     {
         ValidationReport vr = null;
 
         theSchema = new SchematronSchema( new URL( this.schemaDoc ) );
-        vr = theSchema.validateCandidate( new URL( candidate ) );
 
-        if( physicalLocators )
+        synchronized( Session.class )
         {
-            vr.annotateWithLocators( this, new URL( candidate ) );
+            // gets some metadata about the instance to set a context
+            // object used by some XPath extentsion functions
+            URL candidateUrl = new URL( candidate );
+            ValidationContext vc = analyzeCandidate( candidateUrl );
+            vc.setVerbatimName( candidate );
+            
+            Runtime.setValidationContext( vc );
+
+            vr = theSchema.validateCandidate( candidateUrl );
+
+            if( physicalLocators )
+            {
+                vr.annotateWithLocators( this, candidateUrl );
+            }
+
+            if( getReportFormat() == ValidationReport.REPORT_SVRL_MERGED )
+            {
+                vr.mergeSvrlIntoCandidate( this, candidateUrl );
+            }
+
+            return vr;
         }
 
-        if( getReportFormat() == ValidationReport.REPORT_SVRL_MERGED )
-        {
-            vr.mergeSvrlIntoCandidate( this, new URL( candidate ) );
-        }
+    }
 
-        return vr;
 
+    private ValidationContext analyzeCandidate( URL url ) throws SAXException, IOException
+    {
+        ValidationContext vc = new ValidationContext();
+        CandidateAnalyzer ca = new CandidateAnalyzer( vc );
+
+        XMLReader parser = XMLReaderFactory.createXMLReader();
+        parser.setContentHandler( ca );
+        parser.parse( url.toString() );
+
+        return vc;
     }
 
 
