@@ -27,10 +27,10 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
 
-public class LocationMapHandler implements ContentHandler, LexicalHandler
+public class LocationAnalyzer implements ContentHandler, LexicalHandler
 {
 
-    static Logger logger = Logger.getLogger( LocationMapHandler.class );
+    static Logger logger = Logger.getLogger( LocationAnalyzer.class );
     ValidationReport rpt;
     String rollingPath;
     int depth;
@@ -38,7 +38,7 @@ public class LocationMapHandler implements ContentHandler, LexicalHandler
     Locator loc;
 
 
-    public LocationMapHandler( ValidationReport rpt )
+    public LocationAnalyzer( ValidationReport rpt )
     {
         this.rpt = rpt;
     }

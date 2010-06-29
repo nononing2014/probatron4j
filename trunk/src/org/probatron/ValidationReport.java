@@ -41,7 +41,7 @@ public class ValidationReport
     private byte[] reportBytes;
     LogicalPhysicalMap locMap = new LogicalPhysicalMap();
     private SvrlHarvestHandler harvestHandler = new SvrlHarvestHandler( this );
-    private LocationMapHandler locationMapHandler = new LocationMapHandler( this );
+    private LocationAnalyzer locationMapHandler = new LocationAnalyzer( this );
     NamespacePrefixMappings nsMap = new NamespacePrefixMappings();
     
     final public static int REPORT_SVRL_COMPACT = 0;

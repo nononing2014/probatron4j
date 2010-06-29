@@ -19,44 +19,47 @@
 
 package org.probatron;
 
-import net.sf.saxon.s9api.Processor;
-
-import org.probatron.functions.IsValidIsbn;
-import org.probatron.functions.IsValidIsbn13;
-import org.probatron.functions.IsValidIssn;
-
-public class Runtime
+public class ValidationContext
 {
-    private static Processor processor;
-    private static ValidationContext validationContext;
 
-    static
+    private String verbatimName;
+    private String dtdSystemId;
+    private String dtdPublicId;
+
+
+    public String getVerbatimName()
     {
-        processor = new Processor( false );
-
-        // register the Probatron extension functions
-        processor.registerExtensionFunction( new IsValidIsbn() );
-        processor.registerExtensionFunction( new IsValidIsbn13() );
-        processor.registerExtensionFunction( new IsValidIssn() );
-
+        return verbatimName;
     }
 
 
-    public static Processor getSaxonProcessor()
+    public void setVerbatimName( String verbatimName )
     {
-        return processor;
+        this.verbatimName = verbatimName;
     }
 
 
-    public static ValidationContext getValidationContext()
+    public String getDtdSystemId()
     {
-        return validationContext;
+        return dtdSystemId;
     }
 
 
-    public static void setValidationContext( ValidationContext validationContext )
+    public void setDtdSystemId( String dtdSystemId )
     {
-        Runtime.validationContext = validationContext;
+        this.dtdSystemId = dtdSystemId;
+    }
+
+
+    public String getDtdPublicId()
+    {
+        return dtdPublicId;
+    }
+
+
+    public void setDtdPublicId( String dtdPublicId )
+    {
+        this.dtdPublicId = dtdPublicId;
     }
 
 }
