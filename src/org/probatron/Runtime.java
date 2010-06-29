@@ -24,6 +24,7 @@ import net.sf.saxon.s9api.Processor;
 import org.probatron.functions.IsValidIsbn;
 import org.probatron.functions.IsValidIsbn13;
 import org.probatron.functions.IsValidIssn;
+import org.probatron.functions.SystemId;
 
 public class Runtime
 {
@@ -38,6 +39,7 @@ public class Runtime
         processor.registerExtensionFunction( new IsValidIsbn() );
         processor.registerExtensionFunction( new IsValidIsbn13() );
         processor.registerExtensionFunction( new IsValidIssn() );
+        processor.registerExtensionFunction( new SystemId() );
 
     }
 
