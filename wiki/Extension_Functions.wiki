@@ -75,3 +75,5 @@ Based on sniffing the first few bytes of the indicated resource, this function w
  * image/jpeg
  * image/png
  * image/tiff
+
+If none of the above can be determined, an empty string is returned.
