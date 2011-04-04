@@ -27,6 +27,9 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.xml.sax.SAXException;
 
+/**
+ * Class to support command-line invocation of Probatron4J.
+ */
 public class Driver
 {
     private final static String PROPERTY_LOGLVL = "property://probatron.org/log-level";
@@ -92,7 +95,7 @@ public class Driver
     }
 
 
-    static String fixArg( String arg )
+    static private String fixArg( String arg )
     {
         // user concession, if no URL scheme assume these are files
         return arg.indexOf( ":" ) == -1 ? "file:" + arg : arg;

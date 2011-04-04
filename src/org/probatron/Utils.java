@@ -61,6 +61,11 @@ public class Utils
     }
 
 
+    /**
+     * Dereferences a URL.
+     * 
+     * @return the resource as bytes, or NULL in the case of an Exception
+     */
     public static byte[] derefUrl( URL url )
     {
         byte[] ba = null;
