@@ -56,3 +56,11 @@ Returns `true` if `$arg` is a lexically valid ISSN with a valid checksum digit; 
 `pr:system-id() as xs:string`
 
 Returns the system identifier of the candidate document being validated.
+
+
+
+== url-mime-type ==
+
+`pr:url-mime-type($arg as xs:string) as xs:string`
+
+Returns an indication of the MIME type of the resource at the URL `$arg`.
