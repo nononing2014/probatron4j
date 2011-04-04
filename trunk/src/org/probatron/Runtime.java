@@ -25,6 +25,7 @@ import org.probatron.functions.IsValidIsbn;
 import org.probatron.functions.IsValidIsbn13;
 import org.probatron.functions.IsValidIssn;
 import org.probatron.functions.SystemId;
+import org.probatron.functions.UrlMimeType;
 
 public class Runtime
 {
@@ -40,6 +41,7 @@ public class Runtime
         processor.registerExtensionFunction( new IsValidIsbn13() );
         processor.registerExtensionFunction( new IsValidIssn() );
         processor.registerExtensionFunction( new SystemId() );
+        processor.registerExtensionFunction( new UrlMimeType() );
 
     }
 
