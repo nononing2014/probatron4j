@@ -25,6 +25,7 @@ import java.net.URL;
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.functions.ExtensionFunctionCall;
 import net.sf.saxon.functions.ExtensionFunctionDefinition;
+import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.om.SequenceIterator;
 import net.sf.saxon.om.SingletonIterator;
 import net.sf.saxon.om.StructuredQName;
@@ -86,12 +87,24 @@ public class UrlMimeType extends ExtensionFunctionDefinition
         {
             SequenceIterator iter = arguments[ 0 ];
             String url = iter.next().getStringValue();
+            String baseUri = null;
+
+            NodeInfo item = ( NodeInfo )iter.next();
+            if( item != null )
+            {
+                baseUri = item.getBaseURI();
+            }
+            else
+            // no second arg
+            {
+                baseUri = ( ( NodeInfo )context.getContextItem() ).getBaseURI();
+            }
 
             String mime = "";
 
             try
             {
-                mime = HeuriSniff.sniffMimeTypeFromUrl( new URL( url ) );
+                mime = HeuriSniff.sniffMimeTypeFromUrl( new URL( new URL( baseUri ), url ) );
 
             }
             catch( MalformedURLException e )
