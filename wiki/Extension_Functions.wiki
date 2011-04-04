@@ -64,3 +64,5 @@ Returns the system identifier of the candidate document being validated.
 `pr:url-mime-type($arg as xs:string) as xs:string`
 
 Returns an indication of the MIME type of the resource at the URL `$arg`.
+
+Based on sniffing the first few bytes of the indicated resource, this function will return a MIME type string if the resource has opening bytes consistent with the following common formats:
