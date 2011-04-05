@@ -19,7 +19,8 @@
 
 package org.probatron.functions;
 
-import java.util.UUID;
+import java.io.File;
+import java.net.URI;
 
 import javax.xml.transform.Transformer;
 
@@ -30,20 +31,19 @@ import net.sf.saxon.om.SequenceIterator;
 import net.sf.saxon.om.SingletonIterator;
 import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
+import net.sf.saxon.value.BooleanValue;
 import net.sf.saxon.value.SequenceType;
-import net.sf.saxon.value.StringValue;
 
 import org.apache.log4j.Logger;
 import org.probatron.Session;
 import org.probatron.Utils;
 
 @SuppressWarnings("serial")
-public class SystemId extends ExtensionFunctionDefinition
+public class FileExists extends ExtensionFunctionDefinition
 {
-    static Logger logger = Logger.getLogger( SystemId.class );
-
+    static Logger logger = Logger.getLogger( FileExists.class );
     private static StructuredQName funcName = new StructuredQName( "pr",
-            Utils.PROBATRON_FUNCTION_NAME, "system-id" );
+            Utils.PROBATRON_FUNCTION_NAME, "file-exists" );
 
 
     public StructuredQName getFunctionQName()
@@ -54,13 +54,13 @@ public class SystemId extends ExtensionFunctionDefinition
 
     public int getMinimumNumberOfArguments()
     {
-        return 0;
+        return 1;
     }
 
 
     public int getMaximumNumberOfArguments()
     {
-        return 0;
+        return 1;
     }
 
 
@@ -72,33 +72,46 @@ public class SystemId extends ExtensionFunctionDefinition
 
     public SequenceType getResultType( SequenceType[] suppliedArgumentTypes )
     {
-        return SequenceType.SINGLE_STRING;
+        return SequenceType.SINGLE_BOOLEAN;
     }
 
 
     public ExtensionFunctionCall makeCallExpression()
     {
-        return new SystemIdCall();
+        return new FileExistsCall();
     }
 
-    private static class SystemIdCall extends ExtensionFunctionCall
+    private static class FileExistsCall extends ExtensionFunctionCall
     {
 
         public SequenceIterator call( SequenceIterator[] arguments, XPathContext context )
                 throws XPathException
         {
+            // Get the Session
             Transformer t = ( Transformer )context.getController();
-            logger.debug( "getting session id " + t.getParameter( "_uuid_" ) );
-            
             String sessionId = t.getParameter( "_uuid_" ).toString();
-            logger.debug( "UUID is " + sessionId );
             Session session = org.probatron.Runtime.getSession( sessionId );
-            logger.debug( "got Session " + session );
-            String s = session.getValidationContext().getVerbatimName();
 
-            return SingletonIterator.makeIterator( new StringValue( s ) );
+            boolean ret = false;
+
+            if( session.getFsContextDir() != null ) // on eval when there is a file system
+            // context
+            {
+
+                SequenceIterator iter = arguments[ 0 ];
+                String fileNameToTest = iter.next().getStringValue();
+
+                URI baseUri = session.getCandidateAsUri().normalize();
+                File candidateFile = new File( baseUri );
+                File toTest = new File( candidateFile.getParentFile(), fileNameToTest );
+                logger.debug( "testing for " + toTest.getAbsolutePath() );
+                ret = toTest.exists();
+
+            }
+            return SingletonIterator
+                    .makeIterator( ret ? BooleanValue.TRUE : BooleanValue.FALSE );
+
         }
-
     }
 
 }

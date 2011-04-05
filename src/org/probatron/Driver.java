@@ -19,6 +19,7 @@
 
 package org.probatron;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Properties;
@@ -37,7 +38,7 @@ public class Driver
     static Logger logger = Logger.getLogger( Driver.class );
     static int APP_EXIT_FAIL = -1;
     static int APP_EXIT_OKAY = 0;
-    static Session theSession = new Session();
+    static Session theSession;
 
     static
     {
@@ -109,6 +110,8 @@ public class Driver
     public static void main( String[] args )
     {
         long t = System.currentTimeMillis();
+        theSession = new Session();
+
         logger.info( "Starting Probatron" );
 
         if( args.length == 1 && ( args[ 0 ].equals( "-v" ) || args[ 0 ].equals( "-version" ) ) )
@@ -139,7 +142,12 @@ public class Driver
         }
 
         String candidate = fixArg( args[ args.length - 2 ] );
-        theSession.setSchemaDoc( fixArg( args[ args.length - 1 ] ) );
+        theSession.setSchemaSysId( fixArg( args[ args.length - 1 ] ) );
+
+        File f = new File( "." );
+        String path = f.getAbsolutePath().replaceAll( "[\\\\/]\\.", "" );
+        theSession.setFsContextDir( path );
+        logger.debug( "Setting FS context to " + path );
 
         try
         {
@@ -162,5 +170,4 @@ public class Driver
         logger.info( "Done. Elapsed time (ms):" + ( System.currentTimeMillis() - t ) );
 
     }
-
 }

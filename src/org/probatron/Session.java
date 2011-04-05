@@ -19,10 +19,14 @@
 
 package org.probatron;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.UUID;
+
+import net.sf.saxon.om.SequenceIterator;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
@@ -35,34 +39,42 @@ public class Session
 
     private boolean physicalLocators = true;
     private String phase;
-    private String schemaDoc;
+    private String schemaSysId;
     private SchematronSchema theSchema;
     private UUID uuid;
+    private String candidateSysId;
     private int reportFormat;
+    private String fsContextDir;
+
+    private ValidationContext validationContext;
 
 
     public Session()
     {
+        logger.debug( "Session created" );
         uuid = UUID.randomUUID();
+        Runtime.registerSession( this );
     }
 
 
     public ValidationReport doValidation( String candidate ) throws MalformedURLException,
             SAXException, IOException
     {
+        logger.debug( "Session validating ..." );
         ValidationReport vr = null;
+        this.candidateSysId = candidate;
 
-        theSchema = new SchematronSchema( new URL( this.schemaDoc ) );
+        theSchema = new SchematronSchema( this );
 
         synchronized( Session.class )
         {
             // gets some metadata about the instance to set a context
-            // object used by some XPath extentsion functions
+            // object used by some XPath extension functions
             URL candidateUrl = new URL( candidate );
             ValidationContext vc = analyzeCandidate( candidateUrl );
             vc.setVerbatimName( candidate );
-            
-            Runtime.setValidationContext( vc );
+
+            this.setValidationContext( vc );
 
             vr = theSchema.validateCandidate( candidateUrl );
 
@@ -79,6 +91,18 @@ public class Session
             return vr;
         }
 
+    }
+
+
+    public String getFsContextDir()
+    {
+        return fsContextDir;
+    }
+
+
+    public void setFsContextDir( String fsContextDir )
+    {
+        this.fsContextDir = fsContextDir;
     }
 
 
@@ -110,13 +134,13 @@ public class Session
 
     public String getSchemaDoc()
     {
-        return schemaDoc;
+        return schemaSysId;
     }
 
 
-    public void setSchemaDoc( String schemaDoc )
+    public void setSchemaSysId( String schemaDoc )
     {
-        this.schemaDoc = schemaDoc;
+        this.schemaSysId = schemaDoc;
         logger.debug( "Schema document is:" + schemaDoc );
     }
 
@@ -150,6 +174,40 @@ public class Session
     {
         this.reportFormat = reportFormat;
         logger.debug( "Setting option (report format): " + reportFormat );
+    }
+
+
+    public ValidationContext getValidationContext()
+    {
+        return validationContext;
+    }
+
+
+    public void setValidationContext( ValidationContext validationContext )
+    {
+        this.validationContext = validationContext;
+    }
+
+
+    public String getSchemaSysId()
+    {
+        return schemaSysId;
+    }
+
+
+    public String getCandidateSysId()
+    {
+        return candidateSysId;
+    }
+
+
+    public URI getCandidateAsUri()
+    {
+        String cand = candidateSysId;
+        cand = cand.replaceAll( "file:", "" );
+        File candidateFile = new File( getFsContextDir(), cand );
+        logger.debug( "Candidate file is " + candidateFile.getAbsolutePath() );
+        return candidateFile.toURI();
     }
 
 }
