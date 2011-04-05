@@ -30,6 +30,17 @@ For example:
 
 = Details =
 
+== file-exists ==
+
+`pr:file-exists($arg as xs:string) as xs:boolean`
+
+Returns `true` if a file exists at the URL described by `$arg`.
+
+The function will only return true when Probatron is invoked on content in a file system (i.e. the candidate document is as a file URL); otherwise the function always returns `false`.
+
+Note: if `$arg` is a relative URL, it is evaluated relative to the candidate document.
+
+
 == is-valid-isbn ==
 
 `pr:is-valid-isbn($arg as xs:string) as xs:boolean`
