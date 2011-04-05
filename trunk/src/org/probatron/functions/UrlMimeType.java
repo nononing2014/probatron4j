@@ -33,6 +33,7 @@ import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
 
+import org.apache.log4j.Logger;
 import org.probatron.Utils;
 
 import com.griffinbrown.xmltool.utils.HeuriSniff;
@@ -40,6 +41,8 @@ import com.griffinbrown.xmltool.utils.HeuriSniff;
 @SuppressWarnings("serial")
 public class UrlMimeType extends ExtensionFunctionDefinition
 {
+    static Logger logger = Logger.getLogger( UrlMimeType.class );
+
     private static StructuredQName funcName = new StructuredQName( "pr",
             Utils.PROBATRON_FUNCTION_NAME, "url-mime-type" );
 

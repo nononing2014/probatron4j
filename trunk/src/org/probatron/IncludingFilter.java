@@ -32,7 +32,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Processed Schematron's &lt;include> element. This filter processes an instance and performs
- * inclusion of documents referenced by Schamtron's &lt;include> element. Also strips out p
+ * inclusion of documents referenced by Schematron's &lt;include> element. Also strips out p
  * elements.
  */
 public class IncludingFilter extends XMLFilterImpl

@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -34,8 +35,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.Serializer;
+import net.sf.saxon.s9api.XdmAtomicValue;
 import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
@@ -58,18 +61,20 @@ public class SchematronSchema
     private byte[] schemaAsBytes;
     private URL schemaUrl;
     private JarUriResolver jur = new JarUriResolver();
+    private Session session;
 
 
     /**
      * Constructs an instance from the Schematron schema document located at the passed URL.
      */
-    public SchematronSchema( URL url )
+    public SchematronSchema( Session session ) throws MalformedURLException
     {
-        assert this.schemaUrl != null : "null schema URL";
 
-        logger.debug( "Constructing from URL: " + url.toString() );
-        this.schemaAsBytes = Utils.derefUrl( url );
-        this.schemaUrl = url;
+        this.session = session;
+        this.schemaUrl = new URL( session.getSchemaSysId() );
+
+        logger.debug( "Constructing from URL: " + schemaUrl.toString() );
+        this.schemaAsBytes = Utils.derefUrl( schemaUrl );
 
     }
 
@@ -218,6 +223,8 @@ public class SchematronSchema
         Source ss = new StreamSource( new ByteArrayInputStream( interim ) );
         XsltExecutable xx = comp.compile( ss );
         XsltTransformer transformer = xx.load();
+        transformer.setParameter( new QName( "_uuid_" ), new XdmAtomicValue( session.getUuid()
+                .toString() ) );
         transformer.setSource( new StreamSource( candidateStream, schemaUrl.toExternalForm() ) );
 
         Serializer ser = new Serializer();

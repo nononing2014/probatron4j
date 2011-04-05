@@ -19,8 +19,12 @@
 
 package org.probatron;
 
+import java.util.HashMap;
+
 import net.sf.saxon.s9api.Processor;
 
+import org.apache.log4j.Logger;
+import org.probatron.functions.FileExists;
 import org.probatron.functions.IsValidIsbn;
 import org.probatron.functions.IsValidIsbn13;
 import org.probatron.functions.IsValidIssn;
@@ -29,8 +33,10 @@ import org.probatron.functions.UrlMimeType;
 
 public class Runtime
 {
+    static Logger logger = Logger.getLogger( Runtime.class );
+
     private static Processor processor;
-    private static ValidationContext validationContext;
+    private static HashMap< String, Session > sessionMap = new HashMap< String, Session >();
 
     static
     {
@@ -42,6 +48,25 @@ public class Runtime
         processor.registerExtensionFunction( new IsValidIssn() );
         processor.registerExtensionFunction( new SystemId() );
         processor.registerExtensionFunction( new UrlMimeType() );
+        processor.registerExtensionFunction( new FileExists() );
+
+    }
+
+
+    public static void registerSession( Session session )
+    {
+        sessionMap.put( session.getUuid().toString(), session );
+        logger.debug( "Registering session with id " + session.getUuid().toString() );
+
+    }
+
+
+    public static Session getSession( String sessionId )
+    {
+        // when getting string parameters from Saxon they seem to get wrapped
+        // with quotation marks; hence we ensure here we have a pukka UUID
+        sessionId = sessionId.replaceAll( "[^0-9a-zA-Z-]+", "" );
+        return sessionMap.get( sessionId );
 
     }
 
@@ -49,18 +74,6 @@ public class Runtime
     public static Processor getSaxonProcessor()
     {
         return processor;
-    }
-
-
-    public static ValidationContext getValidationContext()
-    {
-        return validationContext;
-    }
-
-
-    public static void setValidationContext( ValidationContext validationContext )
-    {
-        Runtime.validationContext = validationContext;
     }
 
 }
