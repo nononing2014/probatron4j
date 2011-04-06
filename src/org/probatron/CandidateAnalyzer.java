@@ -17,7 +17,6 @@
  * program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 package org.probatron;
 
 import org.xml.sax.Attributes;
@@ -74,8 +73,8 @@ public class CandidateAnalyzer implements LexicalHandler, ContentHandler
 
     public void startDTD( String name, String publicId, String systemId ) throws SAXException
     {
-    // TODO Auto-generated method stub
-
+        validationContext.setDtdPublicId( publicId );
+        validationContext.setDtdSystemId( systemId );
     }
 
 
