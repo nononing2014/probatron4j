@@ -41,6 +41,21 @@ The function will only return true when Probatron is invoked on content in a fil
 Note: if `$arg` is a relative URL, it is evaluated relative to the candidate document.
 
 
+=== governing-dtd-public-identifier ==
+
+`pr:governing-dtd-public-identifier() as xs:string`
+
+Returns the public identifier of any DTD governing the candidate as given in its document type declaration.
+
+
+
+=== governing-dtd-system-identifier ==
+
+`pr:governing-dtd-system-identifier() as xs:string`
+
+Returns the system identifier of any DTD governing the candidate as given in its document type declaration.
+
+
 == is-valid-isbn ==
 
 `pr:is-valid-isbn($arg as xs:string) as xs:boolean`
