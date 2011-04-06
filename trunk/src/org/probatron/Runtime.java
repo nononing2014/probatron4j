@@ -25,9 +25,12 @@ import net.sf.saxon.s9api.Processor;
 
 import org.apache.log4j.Logger;
 import org.probatron.functions.FileExists;
+import org.probatron.functions.GoverningDtdPublicIdentifier;
+import org.probatron.functions.GoverningDtdSystemIdentifier;
 import org.probatron.functions.IsValidIsbn;
 import org.probatron.functions.IsValidIsbn13;
 import org.probatron.functions.IsValidIssn;
+import org.probatron.functions.RomanNumeralToDecimal;
 import org.probatron.functions.SystemId;
 import org.probatron.functions.UrlMimeType;
 
@@ -49,6 +52,9 @@ public class Runtime
         processor.registerExtensionFunction( new SystemId() );
         processor.registerExtensionFunction( new UrlMimeType() );
         processor.registerExtensionFunction( new FileExists() );
+        processor.registerExtensionFunction( new GoverningDtdSystemIdentifier() );
+        processor.registerExtensionFunction( new GoverningDtdPublicIdentifier() );
+        processor.registerExtensionFunction( new RomanNumeralToDecimal() );
 
     }
 
