@@ -4,7 +4,7 @@
 
 Probatron4J makes a number of custom XPath extension functions available.
 
-These functions are in the Namespace "`http://www.xmlopen.org/functions`", which must be bound and used when using these functions. In this documentation the prefix "pr" is assumed to be so bound.
+These functions are in the Namespace "`http://www.xmlopen.org/functions`", which must be bound and used when using these functions. In this documentation the prefix "xo" is assumed to be so bound.
 
 For example:
 
