@@ -19,8 +19,6 @@
 
 package org.probatron.functions;
 
-import javax.xml.transform.Transformer;
-
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.functions.ExtensionFunctionCall;
 import net.sf.saxon.functions.ExtensionFunctionDefinition;
@@ -32,16 +30,17 @@ import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
 
 import org.apache.log4j.Logger;
-import org.probatron.Session;
 import org.probatron.Utils;
 
+import com.griffinbrown.xmltool.utils.RomanNumeralParser;
+
 @SuppressWarnings("serial")
-public class SystemId extends ExtensionFunctionDefinition
+public class RomanNumeralToDecimal extends ExtensionFunctionDefinition
 {
-    static Logger logger = Logger.getLogger( SystemId.class );
+    static Logger logger = Logger.getLogger( RomanNumeralToDecimal.class );
 
     private static StructuredQName funcName = new StructuredQName( "pr",
-            Utils.PROBATRON_FUNCTION_NAME, "system-id" );
+            Utils.PROBATRON_FUNCTION_NAME, "roman-numeral-to-decimal" );
 
 
     public StructuredQName getFunctionQName()
@@ -52,19 +51,19 @@ public class SystemId extends ExtensionFunctionDefinition
 
     public int getMinimumNumberOfArguments()
     {
-        return 0;
+        return 1;
     }
 
 
     public int getMaximumNumberOfArguments()
     {
-        return 0;
+        return 2;
     }
 
 
     public SequenceType[] getArgumentTypes()
     {
-        return new SequenceType[] { SequenceType.SINGLE_STRING };
+        return new SequenceType[] { SequenceType.SINGLE_STRING, SequenceType.OPTIONAL_BOOLEAN };
     }
 
 
@@ -76,27 +75,25 @@ public class SystemId extends ExtensionFunctionDefinition
 
     public ExtensionFunctionCall makeCallExpression()
     {
-        return new SystemIdCall();
+        return new RomanNumeralToDecimalCall();
     }
 
-    private static class SystemIdCall extends ExtensionFunctionCall
+    private static class RomanNumeralToDecimalCall extends ExtensionFunctionCall
     {
 
         public SequenceIterator call( SequenceIterator[] arguments, XPathContext context )
                 throws XPathException
         {
-            Transformer t = ( Transformer )context.getController();
-            logger.debug( "getting session id " + t.getParameter( "_uuid_" ) );
-            
-            String sessionId = t.getParameter( "_uuid_" ).toString();
-            logger.debug( "UUID is " + sessionId );
-            Session session = org.probatron.Runtime.getSession( sessionId );
-            logger.debug( "got Session " + session );
-            String s = session.getValidationContext().getVerbatimName();
+            SequenceIterator iter = arguments[ 0 ];
+            String roman = iter.next().getStringValue();
+
+            RomanNumeralParser rp = new com.griffinbrown.xmltool.utils.RomanNumeralParser(
+                    false );
+            String s = ( String )rp.parse( roman );
 
             return SingletonIterator.makeIterator( new StringValue( s ) );
-        }
 
+        }
     }
 
 }
